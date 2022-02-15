@@ -1,8 +1,10 @@
 [package]
 name = "storage_implementation_test"
-version = "0.1.0"
+version = "1.0.0"
+authors = ["Nikola Kolarov <nikolakolarov03@gmail.com>"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+rocksdb = "0.18.0"
