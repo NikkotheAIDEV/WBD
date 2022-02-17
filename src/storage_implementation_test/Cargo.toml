@@ -8,3 +8,6 @@ edition = "2021"
 
 [dependencies]
 rocksdb = "0.18.0"
+
+#add tokio
+tokio = { version = "1.16.1", features = ["full"] }
