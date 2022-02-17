@@ -1,5 +1,6 @@
 .DS_Store
 .idea
 src/storage_implementation_test/target/
+target/
 
 # src/storage_implementation_test/src/target
