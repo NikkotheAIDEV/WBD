@@ -2,11 +2,13 @@ import mysql.connector
 from mysql.connector import Error
 
 try:
+    # Info
     host = 'localhost'
     database = 'Airport'
     user =  'root'
     password = 'Terziev123'
 
+    # Connect
     connection = mysql.connector.connect(host=host, database=database, user=user, password=password)
 
     if connection.is_connected():
