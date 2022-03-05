@@ -9,7 +9,6 @@ class Connection:
         self.database = database 
         self.user = user 
         self.pas = pas
-        # self.connection = None
 
     def startConnection(self):
         try: 
