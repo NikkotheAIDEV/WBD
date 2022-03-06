@@ -6,4 +6,3 @@ data = None
 def receive_data(input):
     global data
     data = input
-
