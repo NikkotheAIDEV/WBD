@@ -12,6 +12,7 @@ password = 'Terziev123'
 connection = Connection(host, database, user, password)
 connection.startConnection()
 
+# Get the data
 query = "SELECT * FROM Passenger LIMIT 3"
 records = connection.query(query)
 
@@ -20,9 +21,10 @@ records = connection.query(query)
 #     print("ID = ", row[0])
 #     print("Name = "+ str(row[1])+ "\n")
 
-
+# Create a np array and transfer it to tenserflow file
 arr = np.array(records)
 tf.receive_data(arr)
 tf.print_data()
 
+# Close the connection
 connection.stopConnection()
