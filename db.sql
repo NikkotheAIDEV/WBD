@@ -13,6 +13,8 @@ CREATE TABLE Museums (
     address VARCHAR(177) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     avg_rating DOUBLE,
     category_id BIGINT,
+    longitude Double,
+    latitude Double,
     FOREIGN KEY (category_id) REFERENCES Categories(id)
 );
 
@@ -32,3 +34,15 @@ CREATE TABLE Visited (
     museum_id BIGINT,
     FOREIGN KEY (museum_id) REFERENCES Museums(id)
 );
+
+INSERT INTO Categories (category_name)
+VALUES 
+("Art Museums"),
+("Arboretums, Botanical Gardens, & Nature Centers"),
+("Children's Museums"),
+("Uncategorized or General Museums"),
+("Historical Societies, Historic Preservation"),
+("History Museums"),
+("Natural History & Natural Science Museums"),
+("Science & Technology Museums & Planetariums"),
+("Zoos, Aquariums, & Wildlife Conservation");

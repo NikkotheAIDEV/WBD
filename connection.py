@@ -15,6 +15,7 @@ connection.startConnection()
 # Get the data
 query = "SELECT * FROM Passenger LIMIT 3"
 records = connection.query(query)
+print(records)
 
 # print("rows = " + str(len(records)) + "\n")
 # for row in records:
