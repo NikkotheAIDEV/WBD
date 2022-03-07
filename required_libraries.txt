@@ -1,0 +1,14 @@
+1. virtualenv --- pip/pip3 install virtualenv(all dependencies are installed in the local project directory and
+not globa;ly, thus the whole project is self contained and can be easily moved. "env" is the name by convension
+and the one I am using. Activating the virtual env is done via [source <env_name>/bin/activate], where in my case 
+env_name = env. Deactivating the env should be done via [deactivate].)
+
+2.mysql-connector-python ---- pip/pip3 install mysql-connector-python
+
+3. flask --- pip/pip3 install flask
+
+4. flask-restful --- pip/pip3 install flask-restful
+
+
+NOTE: To run server do [python3 ./src/app.py]
+ 
