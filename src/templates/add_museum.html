@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Add a Museum {% endblock %}</h1>
+    <form method="post">
+        <label for="title">Museum Name</label>
+        <br>
+        <input type="text" name="museum_name"
+               placeholder="Museum name"
+               value="{{ request.form['museum_name'] }}"></input>
+        <br>
+
+        <label for="content">Museum Adress</label>
+        <br>
+        <input name="museum_adress"
+                  placeholder="Museum Address"
+                  >{{ request.form['museum_adress'] }}</input>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
