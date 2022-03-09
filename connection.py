@@ -25,7 +25,6 @@ print(records)
 # Create a np array and transfer it to tenserflow file
 arr = np.array(records)
 tf.receive_data(arr)
-tf.print_data()
 
 # Close the connection
 connection.stopConnection()

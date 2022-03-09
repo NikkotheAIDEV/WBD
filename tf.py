@@ -1,5 +1,5 @@
-import numpy as np
 import tensorflow as tf
+import numpy as np
 
 data = None
 
@@ -7,6 +7,3 @@ data = None
 def receive_data(input):
     global data
     data = input
-
-def print_data():
-    print(data)
