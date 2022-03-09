@@ -31,6 +31,24 @@ class Connection:
         cursor.close()
         return records
 
+    def insert_prepared_statement(self, query, data):
+        cursor = self.db_conn.cursor(prepared=True)
+        cursor.execute(query, data)
+        self.db_conn.commit()
+        print("data inserted")
+        cursor.close()
+
+
+    def get_cursor(self):
+        return self.db_conn.cursor()
+    
+    def get_prepared_cursor(self):
+        cursor = self.db_conn.cursor(prepared=True)
+        return cursor
+    
+    def connection_commit(self):
+        self.db_conn.commit()
+
     def stopConnection(self):
         if self.db_conn.is_connected():
             self.db_conn.close()

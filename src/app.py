@@ -1,7 +1,7 @@
 
 from flask import Flask, request, render_template, redirect, url_for
 # from flask_restful import Resource, Api, reqparse
-from query import Connection
+# from query import Connection
 from models import category
 
 
@@ -15,8 +15,8 @@ user =  'root'
 password = 'Nikolakolarov03!'
 
 # Create object
-connection = Connection(host, database, user, password)
-connection.startConnection()
+# connection = Connection(host, database, user, password)
+# connection.startConnection()
 
 # query = "SELECT * FROM Mu"
 # records = connection.query(query)
@@ -55,8 +55,15 @@ def index():
 # regular request with arguments(e.g. website.com/query-request?arg1=argument1)
 @app.route("/query-request")
 def query_request():
-    arg1 = request.args.get("arg1")
-    return '''<h1>Arg1 is {}</h1>'''.format(arg1)#"query arguments example"
+    category_name = request.args.get("type")
+    # insert category in database
+    cat = category.Category(category_name)
+    cat.startConnection()
+    tuple1 = (category_name,)
+    cat.insert_prepared_statement("""INSERT INTO Categories (category_name) VALUES(%s)""", tuple1)
+    cat.stopConnection()
+
+    return '''<h1>Arg1 is {}</h1>'''.format(category_name)#"query arguments example"
 
 # form request.
 @app.route("/form-request", methods=["GET", "POST"])
@@ -64,7 +71,7 @@ def form_request():
     if request.method == "POST":
         museum_name = request.form.get("museum_name")
         museum_address = request.form.get("museum_adress")
-        # return "Hello", 200
+    
         return redirect(url_for('index'))
 
     # if method id [GET], present the form
@@ -85,4 +92,4 @@ def json_request():
 if __name__ == "__main__":
     app.run(debug=True)
 
-connection.stopConnection()
+# connection.stopConnection()
