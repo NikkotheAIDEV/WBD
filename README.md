@@ -3,10 +3,16 @@
 
 This is a work in progress application/website for giving recommendations on museums to visit based on previously visited ones.
 
-The project is developed for an university competition.
+The project is developed for a competition.
 
-The projects uses these libraries:
-    Tensorflow
-    Numpy
-    Pandas
-    MySQL Connector Python
+## Languages used:
+* Python
+* HTML
+* MySQL
+
+## Libraries used:
+* MySQL Connector Python
+* Tensorflow
+* Numpy
+* Pandas
+* Flask
