@@ -1,4 +1,5 @@
 from query import Connection
+from helper import Helper
 import numpy as np
 import tf
 
@@ -15,7 +16,7 @@ connection.startConnection()
 # Get the data
 query = "SELECT * FROM Passenger LIMIT 3"
 records = connection.query(query)
-print(records)
+# print(records)
 
 # print("rows = " + str(len(records)) + "\n")
 # for row in records:
@@ -25,6 +26,9 @@ print(records)
 # Create a np array and transfer it to tenserflow file
 arr = np.array(records)
 tf.receive_data(arr)
+
+helper = Helper()
+print(helper.request_interested_in_4([1, 2]))
 
 # Close the connection
 connection.stopConnection()
