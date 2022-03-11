@@ -21,7 +21,7 @@ CREATE TABLE Museums (
 CREATE TABLE Person (
 	id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    surname VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    sur_name VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     most_liked_category_id BIGINT
 );
 

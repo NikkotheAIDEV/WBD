@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Add a Visit {% endblock %}</h1>
+    <form method="post">
+
+        <label for="title">Current User Id[1-1000](internal)</label>
+        <input type="text" name="user_id"
+               placeholder="Internal Id"
+               value="{{ request.form['user_id'] }}"></input>
+        <br>
+
+        <label for="title">Favourite Category: </label>
+
+        <select name="dropdown_preference">
+            <option value="1">Art Museums</option>
+            <option value="2">Arboretums, Botanical Gardens, & Nature Centers</option>
+            <option value="3">Children's Museums</option>
+            <option value="4">Uncategorized or General Museums</option>
+            <option value="5">Historical Societies, Historic Preservation</option>
+            <option value="6">History Museums</option>
+            <option value="7">Natural History & Natural Science Museums</option>
+            <option value="8">Science & Technology Museums & Planetariums</option>
+            <option value="9">Zoos, Aquariums, & Wildlife Conservation</option>        
+        </select>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

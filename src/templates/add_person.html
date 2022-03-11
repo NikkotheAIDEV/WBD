@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Add User {% endblock %}</h1>
+    <form method="post">
+
+        <label for="title">First Name: </label>
+        <input type="text" name="first_name"
+               placeholder="First Name"
+               value="{{ request.form['first_name'] }}"></input>
+        <br>
+
+        <label for="title">Last Name: </label>
+        <input type="text" name="last_name"
+               placeholder="Last Name"
+               value="{{ request.form['last_name'] }}"></input>
+        <br>
+
+        <label for="title">Favourite Category: </label>
+
+        <select name="dropdown_preference">
+            <option value="1">Art Museums</option>
+            <option value="2">Arboretums, Botanical Gardens, & Nature Centers</option>
+            <option value="3">Children's Museums</option>
+            <option value="4">Uncategorized or General Museums</option>
+            <option value="5">Historical Societies, Historic Preservation</option>
+            <option value="6">History Museums</option>
+            <option value="7">Natural History & Natural Science Museums</option>
+            <option value="8">Science & Technology Museums & Planetariums</option>
+            <option value="9">Zoos, Aquariums, & Wildlife Conservation</option>        
+        </select>
+        <br>
+
+        <!-- <label for="content">Museum Adress</label>
+        <br>
+        <input name="museum_adress"
+                  placeholder="Museum Address"
+                  >{{ request.form['museum_adress'] }}</input>
+        <br> -->
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

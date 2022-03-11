@@ -38,13 +38,20 @@ class Connection:
         print("data inserted")
         cursor.close()
 
-
-    def get_cursor(self):
-        return self.db_conn.cursor()
-    
-    def get_prepared_cursor(self):
+    def get_preapred_statement(self, query, data):
         cursor = self.db_conn.cursor(prepared=True)
-        return cursor
+        cursor.execute(query, data)
+        records = cursor.fetchall()
+        cursor.close()
+        return records
+
+
+    # def get_cursor(self):
+    #     return self.db_conn.cursor()
+    
+    # def get_prepared_cursor(self):
+    #     cursor = self.db_conn.cursor(prepared=True)
+    #     return cursor
     
     def connection_commit(self):
         self.db_conn.commit()

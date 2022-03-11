@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Add Category {% endblock %}</h1>
+    <form method="post">
+        <label for="title">Category</label>
+        <br>
+        <div style="height: 10px;"></div>
+        <input type="text" name="category_name"
+               placeholder="Category name"
+               value="{{ request.form['categoryName'] }}"></input>
+        <br>
+        <div style="height: 10px;"></div>
+<!-- 
+        <label for="content">Museum Adress</label>
+        <br>
+        <input name="museum_adress"
+                  placeholder="Museum Address"
+                  >{{ request.form['museum_adress'] }}</input>
+        <br> -->
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
