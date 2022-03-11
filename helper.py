@@ -76,7 +76,7 @@ class Helper:
         fav_arr = []
 
         for _ in range(6):
-            z = random.randrange(1, 101)
+            z = random.randrange(1, 100)
             fav_arr.append(data_favourites[z, 0])
         
         return fav_arr
@@ -88,19 +88,16 @@ class Helper:
         for x in range(len(id)):
             if ids == "":
                 ids = ids + ("{}").format(id[x])
-                print(ids)
             else:
                 ids = ids + (", {}").format(id[x])
-                print(ids)
 
         query_interested_in = "SELECT id FROM Museums WHERE category_id IN ({}) AND (avg_rating > 0.5) ORDER BY id ASC LIMIT 100".format(ids)
-        print(query_interested_in)
         records_interested_in = connection.query(query_interested_in)
         data_interested_in = np.array(records_interested_in)
         interested_in_arr = []
 
         for _ in range(4):
-            z = random.randrange(1, 101)
+            z = random.randrange(1, 100)
             interested_in_arr.append(data_interested_in[z, 0])
 
         return interested_in_arr

@@ -8,7 +8,7 @@ The project is developed for a competition.
 ## Languages used:
 * Python
 * HTML
-* MySQL
+* SQL
 
 ## Libraries used:
 * MySQL Connector Python
