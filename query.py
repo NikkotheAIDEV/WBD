@@ -40,7 +40,7 @@ class Connection:
         db_conn.commit()
 
     def stopConnection(self):
-        if self.db_conn.is_connected():
-            self.cursor.close()
-            self.db_conn.close()
+        if db_conn.is_connected():
+            cursor.close()
+            db_conn.close()
             print("MySQL connection is closed!")
