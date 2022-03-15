@@ -1,17 +1,12 @@
 # Target table (person_id, category_id)
+from src.deep_learning.helper import Helper
 from multiprocessing import Array
 from src.query import Connection
-from src.deep_learning.helper import Helper
-
-# Info
-host = '127.0.0.1'
-database = 'WBD'
-user =  'root'
-password = 'Terziev123'
+from src.models import consts
 
 # Create object
 helper = Helper()
-connection = Connection(host, database, user, password)
+connection = Connection(consts.HOST, consts.DATABASE, consts.USER, consts.PASSWORD)
 
 for x in range(1, 1001):
     results = []

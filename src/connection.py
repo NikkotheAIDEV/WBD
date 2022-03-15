@@ -1,14 +1,9 @@
-from src.query import Connection
 from src.utillities import Utillities
-
-# Info
-host = '127.0.0.1'
-database = 'WBD'
-user =  'root'
-password = 'Terziev123'
+from src.query import Connection
+from src.models import consts
 
 # Create object
-connection = Connection(host, database, user, password)
+connection = Connection(consts.HOST, consts.DATABASE, consts.USER, consts.PASSWORD)
 connection.startConnection()
 
 # Test utillities

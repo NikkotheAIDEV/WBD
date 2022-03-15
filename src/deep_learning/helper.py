@@ -1,18 +1,12 @@
 # Have to get id and most liked category + interested in categories, then find suatable museums(6 based on favourite + rating sorted in 5.0->0.0, 4 based on interested_in + rating > 2.0)
-from multiprocessing.dummy import Array
 from src.query import Connection
+from src.models import consts
 from ast import Dict
 import numpy as np
 import random
 
-# Info
-host = '127.0.0.1'
-database = 'WBD'
-user =  'root'
-password = 'Terziev123'
-
 # Create object
-connection = Connection(host, database, user, password)
+connection = Connection(consts.HOST, consts.DATABASE, consts.USER, consts.PASSWORD)
 connection.startConnection()
 
 class Helper:
@@ -60,7 +54,7 @@ class Helper:
         record_fav_id = connection.query(query_fav_id)
         return record_fav_id[0][0]
 
-    def request_interested_in_id(self, id) -> Array:
+    def request_interested_in_id(self, id) -> list:
         query_interested_in_id = "SELECT DISTINCT category_id FROM Interested_in WHERE person_id = {}".format(id)
         record_interested_in_id = connection.query(query_interested_in_id)
         if len(record_interested_in_id) != 0:
@@ -69,7 +63,7 @@ class Helper:
         return []
 
     # Get the 100 highest rated museums in favourite category and select 6
-    def request_favourite_6(self, id) -> Array:
+    def request_favourite_6(self, id) -> list:
         query_favourites = "SELECT id FROM Museums WHERE category_id = {} ORDER BY avg_rating DESC LIMIT 100".format(id)
         records_favourite = connection.query(query_favourites)
         data_favourites = np.array(records_favourite)
@@ -82,7 +76,7 @@ class Helper:
         return fav_arr
 
     # Get a 100 museums in interested_in category and select 4
-    def request_interested_in_4(self, id = []) -> Array:
+    def request_interested_in_4(self, id = []) -> list:
 
         ids = ""
         for x in range(len(id)):
