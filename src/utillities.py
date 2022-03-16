@@ -1,5 +1,5 @@
-from src.query import Connection
-from src.models import consts
+from query import Connection
+from models import consts
 
 # Create object
 connection = Connection(consts.HOST, consts.DATABASE, consts.USER, consts.PASSWORD)
