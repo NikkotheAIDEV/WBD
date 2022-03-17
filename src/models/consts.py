@@ -13,4 +13,4 @@ __databases = file.getElementsByTagName('database')
 HOST = str(__hosts[0].firstChild.data) #'127.0.0.1'
 DATABASE =  str(__databases[0].firstChild.data)#'WBD'
 USER =  str(__users[0].firstChild.data) #'root'
-PASSWORD = str(__passwords[0].firstChild.data) #'Nikolakolarov03!'
+PASSWORD = str(__passwords[0].firstChild.data) #'Terziev123'

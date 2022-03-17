@@ -1,4 +1,3 @@
-from curses import curs_set
 import mysql.connector
 from mysql.connector import Error
 
@@ -17,7 +16,6 @@ class Connection:
 
             if self.db_conn.is_connected():
             
-                # Print the version of mqsql for testing the connection
                 db_info = self.db_conn.get_server_info()
                 print("Connected to MySQL Server version ", db_info, "\n")
                 
@@ -47,22 +45,24 @@ class Connection:
         return records
 
     
-    def search_muesums(self, name, limit = 100, offset = 0) -> list:
+    def search_museum_by_name(self, name, limit = 100, offset = 0) -> list:
         cursor = self.db_conn.cursor()
         search_query = "SELECT * FROM Museums WHERE museum_name LIKE '%{}%' LIMIT {} OFFSET {}".format(name, limit, offset)
         cursor.execute(search_query)
         results = cursor.fetchall()
         cursor.close()
+
         return results
 
+    def search_museum_by_id(self, id) -> list:
+        cursor = self.db_conn.cursor()
+        search_query = "SELECT * FROM Museums WHERE id = {}".format(id)
+        cursor.execute(search_query)
+        results = cursor.fetchall()
+        cursor.close()
 
-    # def get_cursor(self):
-    #     return self.db_conn.cursor()
-    
-    # def get_prepared_cursor(self):
-    #     cursor = self.db_conn.cursor(prepared=True)
-    #     return cursor
-    
+        return results
+
     def connection_commit(self):
         self.db_conn.commit()
 

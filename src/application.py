@@ -1,6 +1,4 @@
 from flask import Flask, request, render_template, redirect, session, url_for
-# from flask_restful import Resource, Api, reqparse
-# from query import Connection
 from models import category, person, interest, museum
 
 # Utility function passed to the html template for calculation.
@@ -13,18 +11,11 @@ app.jinja_env.globals.update(round = round_num)
 
 @app.route("/version", methods=["GET"])
 def version():
-    #if connection:
-    #return "Successfully connected to db"
     return { "version": "0.0.1" }, 200
-    #return render_template("add_museum.html")
 
 @app.route("/", methods=["GET"])
 def index():
     msg = request.args.get("msg")
-
-    # if connection:
-    #return "Successfully connected to db"
-    #return { "version": "0.0.1" }, 200
     return render_template("index.html", message = msg)
 
 class Item:
@@ -35,7 +26,6 @@ museum_results = []
 
 @app.route("/results", methods=["GET"])
 def results():
-    museums = request.args.get("museums_dicts")
     return render_template('results.html', museums = museum_results)
 
 @app.route("/", methods=['POST'])
@@ -44,7 +34,7 @@ def search_museum():
     museum_keyword = str(museum_keyword)
     __museum = museum.Museum("some", "random", "info", "for", "object") #this object is not for insertion. It is created so the search method inside can be used.
     __museum.startConnection()
-    results = __museum.search_muesums(museum_keyword, limit=100) 
+    results = __museum.search_museum_by_name(museum_keyword, limit=100)
     __museum.stopConnection()
     #add field names
     _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute']
@@ -53,9 +43,7 @@ def search_museum():
     item_list = [Item(i) for i in museum_dicts]
     global museum_results
     museum_results = item_list
-    return redirect(url_for('results'))#museums_dicts=museum_dicts))
-
-
+    return redirect(url_for('results'))
 
 # add category
 @app.route("/add-category", methods=["GET", "POST"])
@@ -173,9 +161,3 @@ def json_request():
     
 if __name__ == "__main__":
      app.run(debug=True)
-    # app.run(host='127.0.0.1')
-
-# if __name__ == "__main__":
-#     app.run(host='0.0.0.0')
-
-# connection.stopConnection()

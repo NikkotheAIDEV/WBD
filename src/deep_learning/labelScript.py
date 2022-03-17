@@ -1,6 +1,4 @@
-# Target table (person_id, category_id)
 from src.deep_learning.helper import Helper
-from multiprocessing import Array
 from src.query import Connection
 from src.models import consts
 
