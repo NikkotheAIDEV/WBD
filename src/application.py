@@ -1,6 +1,4 @@
-
-import json
-from flask import Flask, request, render_template, redirect, session, url_for, jsonify
+from flask import Flask, request, render_template, redirect, session, url_for
 # from flask_restful import Resource, Api, reqparse
 # from query import Connection
 from models import category, person, interest, museum
@@ -13,50 +11,20 @@ app = Flask(__name__)
 app.secret_key = "SuPerSecretKe7"
 app.jinja_env.globals.update(round = round_num)
 
-# api = Api(app)
-
-# Info
-# host = '127.0.0.1'
-# database = 'WBD'
-# user =  'root'
-# password = 'Nikolakolarov03!'
-
-# Create object
-# connection = Connection(host, database, user, password)
-# connection.startConnection()
-
-# query = "SELECT * FROM Mu"
-# records = connection.query(query)
-# print("rows = " + str(len(records)) + "\n")
-# for row in records:
-#     print("ID = ", row[0])
-#     print("Name = "+ str(row[1])+ "\n")
-
-# class Museums(Resource):
-#     def get(self):
-#         parser = reqparse.RequestParser()
-#         parser.add_argument('arg1', type = str, help="Only integers allowed",  required=True)
-
-#         args = parser.parse_args()
-#         # print(args['arg1'])
-#         return {"message": "Success", "args_received": args['arg1']}, 200
-
-# api.add_resource(Museums, '/museum')
-
 @app.route("/version", methods=["GET"])
 def version():
-    # if connection:
-    #     return "Successfully connected to db"
+    #if connection:
+    #return "Successfully connected to db"
     return { "version": "0.0.1" }, 200
-    #  return render_template("add_museum.html")
+    #return render_template("add_museum.html")
 
 @app.route("/", methods=["GET"])
 def index():
     msg = request.args.get("msg")
 
     # if connection:
-    #     return "Successfully connected to db"
-    # return { "version": "0.0.1" }, 200
+    #return "Successfully connected to db"
+    #return { "version": "0.0.1" }, 200
     return render_template("index.html", message = msg)
 
 class Item:
@@ -74,18 +42,18 @@ def results():
 def search_museum():
     museum_keyword = request.form.get("search_museums")
     museum_keyword = str(museum_keyword)
-    __museum = museum.Museum("some", "random", "info", "for", "object") # this object is not for insertion. It is created so the search method inside can be used.
+    __museum = museum.Museum("some", "random", "info", "for", "object") #this object is not for insertion. It is created so the search method inside can be used.
     __museum.startConnection()
     results = __museum.search_muesums(museum_keyword, limit=100) 
     __museum.stopConnection()
-    # add field names
+    #add field names
     _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute']
     museum_dicts = [dict(zip(_fields, r)) for r in results]
-    # do some magic so it works.
+    #do some magic so it works.
     item_list = [Item(i) for i in museum_dicts]
     global museum_results
     museum_results = item_list
-    return redirect(url_for('results'))#, museums_dicts=museum_dicts))
+    return redirect(url_for('results'))#museums_dicts=museum_dicts))
 
 
 
@@ -191,6 +159,11 @@ def add_museum():
     # print("National Museum".upper())
     # if method is [GET], present the form
     return render_template("add_museum.html")
+
+
+@app.route('/favicon.ico') 
+def favicon(): 
+    return
 
 # receive JSON object
 @app.route("/json-request", methods=["POST"])
