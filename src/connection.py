@@ -8,7 +8,7 @@ connection.startConnection()
 
 # Test utillities
 utils = Utillities()
-results = utils.search("Aeronautics", 100, 0)
+results = utils.search("Nige")
 print(results)
 
 # Close the connection
