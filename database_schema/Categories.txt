@@ -1,0 +1,9 @@
+(NULL, "Art Museums"),
+(NULL, "Arboretums, Botanical Gardens, & Nature Centers"),
+(NULL, "Children's Museums"),
+(NULL, "Uncategorized or General Museums"),
+(NULL, "Historical Societies, Historic Preservation"),
+(NULL, "History Museums"),
+(NULL, "Natural History & Natural Science Museums"),
+(NULL, "Science & Technology Museums & Planetariums"),
+(NULL, "Zoos, Aquariums, & Wildlife Conservation");
