@@ -1,0 +1,6 @@
+1. To create virtual environment run [virtualenv env]
+1. To start the virtual environment run [source env/bin/activate]
+2. One the virtual environment is running, install all dependencies, run [pip install -r requirements.txt](requirements.txt is located in 'src')
+3. Then inside 'src' run [gunicorn --workers 4 --bind 127.0.0.1:5000 wsgi:app]
+4. Forward to 127.0.0.1:5000 and everithing should work
+ 

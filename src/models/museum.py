@@ -1,10 +1,14 @@
+
 from models.consts import DATABASE, HOST, PASSWORD, USER
 from query import Connection
 class Museum(Connection):
     # __database_conn = None
-    def __init__(self, user_id, category_id) -> None:
-        self.user_id = user_id
-        self.category_id = category_id
+    def __init__(self, name, address, country, rating, category) -> None:
+        self.museum_name = name
+        self.museum_address = address
+        self.country = country
+        self.rating = rating
+        self.museum_category = category
         super().__init__(HOST, DATABASE, USER, PASSWORD)
         # __database_conn = Connection(HOST, DATABASE, USER, PASSWORD)
         # __database_conn.startConnection()
@@ -25,3 +29,10 @@ class Museum(Connection):
 
     # def close_connection(self):
     #    self.__database_conn.stopConnection()
+
+    # def search_muesum(name, limit = 100, offset = 0) -> list:
+    #     results = search_museum()
+    #     # search_query = "SELECT * FROM Museums WHERE museum_name LIKE '%{}%' LIMIT {} OFFSET {}".format(name, limit, offset)
+    #     # results = self.connection.query(search_query)
+    #     # return results
+

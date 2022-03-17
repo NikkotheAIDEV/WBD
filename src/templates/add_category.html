@@ -1,16 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Add Category {% endblock %}</h1>
-    <form method="post">
-        <label for="title">Category</label>
-        <br>
-        <div style="height: 10px;"></div>
-        <input type="text" name="category_name"
-               placeholder="Category name"
-               value="{{ request.form['categoryName'] }}"></input>
-        <br>
-        <div style="height: 10px;"></div>
+    <!-- <h1>{% block title %} Add Category {% endblock %}</h1> -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Add Category</a>
+        </div>
+    </nav>
+
+    <form method="post" class="ms-3 mt-3 w-25">
+        <div class="form-group">
+            <label for="category_input">Category</label>
+            <br>
+            <!-- <div style="height: 10px;"></div> -->
+            <input type="text" id="category_input" name="category_name"
+                placeholder="Category name"
+                value="{{ request.form['categoryName'] }}" class="form-control h-25 shadow-none"></input>
+            <br>
+        <div style="height: 5px;"></div>
 <!-- 
         <label for="content">Museum Adress</label>
         <br>
@@ -18,6 +25,7 @@
                   placeholder="Museum Address"
                   >{{ request.form['museum_adress'] }}</input>
         <br> -->
-        <button type="submit">Submit</button>
+            <button type="submit" class="btn btn-outline-primary">Submit</button>
+        </div>
     </form>
 {% endblock %}

@@ -1,3 +1,4 @@
+from curses import curs_set
 import mysql.connector
 from mysql.connector import Error
 
@@ -38,12 +39,21 @@ class Connection:
         print("data inserted")
         cursor.close()
 
-    def get_preapred_statement(self, query, data):
+    def get_preapred_statement(self, query, data, limit = 100, offset = 0):
         cursor = self.db_conn.cursor(prepared=True)
         cursor.execute(query, data)
         records = cursor.fetchall()
         cursor.close()
         return records
+
+    
+    def search_muesums(self, name, limit = 100, offset = 0) -> list:
+        cursor = self.db_conn.cursor()
+        search_query = "SELECT * FROM Museums WHERE museum_name LIKE '%{}%' LIMIT {} OFFSET {}".format(name, limit, offset)
+        cursor.execute(search_query)
+        results = cursor.fetchall()
+        cursor.close()
+        return results
 
 
     # def get_cursor(self):

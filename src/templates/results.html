@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Results</a>
+        </div>
+    </nav>
+
+ {% for museum_dict in museums %}
+        <div class="h-30 w-55 mt-3 ms-3">
+            <p>{{ museum_dict.name }}</p>
+            <small class="form-text text-muted mb-3">Rating: {{ round(((5-1)*(museum_dict.rating-0)/1-0)+1) }}</small> 
+            <!-- {{ ((5-1)*(museum_dict.rating-0)/1-0)+1 }} -->
+        </div>
+ {% endfor %}
+<!-- </ul> -->
+
+{% endblock %}
