@@ -41,3 +41,5 @@ profile.register("Ivan", "Terziev", "Vankata38", "Terziev123", 3)
 
 profile.log_in("VladiT", "Terziev123")
 profile.log_in("Vankata38", "Terziev123")
+
+connection.stopConnection()

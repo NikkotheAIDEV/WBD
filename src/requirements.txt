@@ -43,3 +43,4 @@ Werkzeug==2.0.3
 wrapt==1.14.0
 zipp==3.7.0
 bcrypt==3.2.0
+bs4==0.0.1
