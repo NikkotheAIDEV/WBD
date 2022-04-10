@@ -12,7 +12,6 @@ The project is developed for a competition.
 
 ## Libraries used:
 * MySQL Connector Python
-* Tensorflow
 * Numpy
 * Pandas
 * Flask

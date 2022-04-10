@@ -74,7 +74,7 @@ def add_person():
         user = person.Person(first_name, last_name, preference)
         user.startConnection()
         tuple1 = (user.first_name, user.last_name, user.preference)
-        user.insert_prepared_statement("INSERT INTO Person VALUES(NULL, %s, %s, %s)", tuple1)
+        user.insert_prepared_statement("INSERT INTO Person(id, first_name, user_name, most_liked_category_id) VALUES(NULL, %s, %s, %s)", tuple1)
         user.stopConnection()
         return redirect(url_for('index'))
 

@@ -22,6 +22,8 @@ CREATE TABLE Person (
 	id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     sur_name VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    username VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    hashed_password VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     most_liked_category_id BIGINT
 );
 
@@ -33128,7 +33130,7 @@ VALUES
 (NULL, "ZWAANENDAEL MUSEUM", "US", "102 KINGS HWY", 0.6, 4, -75.13994, 38.772),
 (NULL, "ZYDECO HISTORICAL AND PRESERVATION SOCIETY", "US", "PO BOX 2361", 0.56, 5, -92.08014, 30.53453);
 
-INSERT INTO Person
+INSERT INTO Person(id, first_name, sur_name, most_liked_category_id)
 VALUES
 (NULL,"Ken","Abadi",1),
 (NULL,"Mollie","Abraham",1),
@@ -46138,3 +46140,7 @@ VALUES
 (NULL, 142, 23721),
 (NULL, 989, 5589),
 (NULL, 347, 19878);
+
+INSERT INTO Person
+VALUES
+(NULL, "Ivan", "Terziev", "Vankata38", "$2b$14$13DYe0X91vItM0RaBjRFA.2psqb.WgZuFOgNZTYrHFsGOpV6sjzsO", 3);

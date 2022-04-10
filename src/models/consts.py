@@ -1,7 +1,8 @@
 from xml.dom import minidom
 import os
 
-file = minidom.parse(os.path.abspath('connection.xml')) #minidom.parse('/Users/NikolaKolarov/Desktop/WBD python/WBD/src/connection.xml')
+file = minidom.parse('/Users/vankata/Desktop/Projects/Python/WBD/src/connection.xml')
+# file = minidom.parse(os.path.abspath('connection.xml')) #minidom.parse('/Users/NikolaKolarov/Desktop/WBD python/WBD/src/connection.xml')
 
 __hosts = file.getElementsByTagName('host')
 __users = file.getElementsByTagName('user') 
