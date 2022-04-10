@@ -13,9 +13,10 @@ CREATE TABLE Museums (
     address VARCHAR(177) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     avg_rating DOUBLE,
     category_id BIGINT,
+    FOREIGN KEY (category_id) REFERENCES Categories(id),
     longitude Double,
     latitude Double,
-    FOREIGN KEY (category_id) REFERENCES Categories(id)
+    image_url VARCHAR(177) DEFAULT NULL
 );
 
 CREATE TABLE Person (
@@ -55,7 +56,7 @@ VALUES
 (NULL, "Science & Technology Museums & Planetariums"),
 (NULL, "Zoos, Aquariums, & Wildlife Conservation");
 
-INSERT INTO Museums
+INSERT INTO Museums(id, museum_name, country, address, avg_rating, category_id, longitude, latitude)
 VALUES
 (NULL, "1000 ISLANDS MUSEUMS", "US", "PO BOX 502", 0.11, 4, -76.08771, 44.23987),
 (NULL, "100TH MERIDIAN MUSEUM", "US", "206 E 8TH ST", 0.69, 4, -99.98338, 40.85963),
@@ -46140,7 +46141,3 @@ VALUES
 (NULL, 142, 23721),
 (NULL, 989, 5589),
 (NULL, 347, 19878);
-
-INSERT INTO Person
-VALUES
-(NULL, "Ivan", "Terziev", "Vankata38", "$2b$14$13DYe0X91vItM0RaBjRFA.2psqb.WgZuFOgNZTYrHFsGOpV6sjzsO", 3);
