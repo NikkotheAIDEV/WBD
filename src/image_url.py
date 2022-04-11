@@ -1,4 +1,3 @@
-from readline import insert_text
 from bs4 import BeautifulSoup
 from query import Connection
 from models import consts
@@ -15,10 +14,9 @@ def search_url(query):
 
 connection = Connection(consts.HOST, consts.DATABASE, consts.USER, consts.PASSWORD)
 connection.startConnection()
-
 query = "SELECT museum_name FROM Museums"
 all_museums = connection.query(query)
-for index, museum in enumerate(all_museums, start=2879):
+for index, museum in enumerate(all_museums):
     image_url = search_url(museum[0])
     insert_query = "UPDATE Museums SET image_url = \'{}\' WHERE id = {};".format(image_url ,index+1)
     connection.insert_prepared_statement(insert_query, None)

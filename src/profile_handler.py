@@ -33,13 +33,3 @@ class ProfileHandler:
 
         query = "INSERT INTO Person VALUE (NULL, \"{}\", \"{}\", \"{}\", \"{}\", {});".format(first_name, sur_name, username, hashed_password, fav_category)
         connection.insert_prepared_statement(query, None)
-
-# TESTS
-profile = ProfileHandler()
-profile.register("Vladislav", "Terziev", "VladiT", "Terziev123", 3)
-profile.register("Ivan", "Terziev", "Vankata38", "Terziev123", 3)
-
-profile.log_in("VladiT", "Terziev123")
-profile.log_in("Vankata38", "Terziev123")
-
-connection.stopConnection()
