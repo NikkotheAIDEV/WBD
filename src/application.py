@@ -1,5 +1,10 @@
+from crypt import methods
+# from WBD.src.models.profile_handler import ProfileHandler
 from flask import Flask, request, render_template, redirect, session, url_for
-from models import category, person, interest, museum
+# from flask_restful import Resource, Api, reqparse
+# from query import Connection
+from models import category, person, interest, museum, profile_handler
+
 
 # Utility function passed to the html template for calculation.
 def round_num(x):
@@ -13,7 +18,40 @@ app.jinja_env.globals.update(round = round_num)
 def version():
     return { "version": "0.0.1" }, 200
 
-@app.route("/", methods=["GET"])
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("passwrd")
+        password = str(password)
+        username = str(username)
+
+
+        result = profile_handler.ProfileHandler().log_in(username, password)
+        if result:
+            return redirect(url_for('index'))
+    return render_template("login.html")
+
+@app.route("/", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        preference = request.form.get("dropdown_preference")
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        username = request.form.get("username")
+        password = request.form.get("passwrd")
+        password = str(password)
+        first_name = str(first_name)
+        last_name = str(last_name)
+        username = str(username)
+        preference = int(preference)
+
+        profile_handler.ProfileHandler().register(first_name, last_name, username, password, preference)
+        return redirect(url_for('login'))
+
+    return render_template("signup.html")
+
+@app.route("/index", methods=["GET"])
 def index():
     msg = request.args.get("msg")
     return render_template("index.html", message = msg)
@@ -28,7 +66,7 @@ museum_results = []
 def results():
     return render_template('results.html', museums = museum_results)
 
-@app.route("/", methods=['POST'])
+@app.route("/index", methods=['POST'])
 def search_museum():
     museum_keyword = request.form.get("search_museums")
     museum_keyword = str(museum_keyword)
