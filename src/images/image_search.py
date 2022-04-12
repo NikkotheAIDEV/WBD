@@ -70,6 +70,8 @@ def search_museum(name: str, num_results = 5) -> dict:
         
         results = search(name)
         result = results["results"]
+        if num_results > len(result):
+            num_results = len(result)
 
         data: dict = {}
         for i in range(num_results):
