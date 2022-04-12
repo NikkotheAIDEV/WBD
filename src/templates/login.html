@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">WBD - Log In</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <!-- <a class="nav-link active" aria-current="page" href="{{url_for('index')}}">Home</a> -->
+              </li>
+        </ul>
+    </div>
+</nav>
+    <form method="post" class="mt-3 ms-3 w-25">
+        <div>
+
+            <div class="form-group mb-2">
+                <label for="username">Username</label>
+                <br>
+                <input type="text" id="username" name="username"
+                    placeholder="Username"
+                    value="{{ request.form['user_name'] }}" class="form-control h-25 shadow-none"></input>
+            </div>
+
+            <div class="form-group mb-2">
+                <label for="pass">Password</label>
+                <br>
+                <input type="password" id="pass" name="passwrd"
+                    placeholder="Password"
+                    value="{{ request.form['pass'] }}" class="form-control h-25 shadow-none"></input>
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Log In</button>
+        </div>
+    </form>
+{% endblock %}
