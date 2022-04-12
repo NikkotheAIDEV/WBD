@@ -1,6 +1,7 @@
 from crypt import methods
 # from WBD.src.models.profile_handler import ProfileHandler
 from flask import Flask, request, render_template, redirect, session, url_for
+from flask_session import Session
 # from flask_restful import Resource, Api, reqparse
 # from query import Connection
 from models import category, person, interest, museum, profile_handler
@@ -13,6 +14,9 @@ def round_num(x):
 app = Flask(__name__)
 app.secret_key = "SuPerSecretKe7"
 app.jinja_env.globals.update(round = round_num)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 @app.route("/version", methods=["GET"])
 def version():
@@ -29,6 +33,7 @@ def login():
 
         result = profile_handler.ProfileHandler().log_in(username, password)
         if result:
+            session["name"] = username
             return redirect(url_for('index'))
     return render_template("login.html")
 
@@ -53,6 +58,8 @@ def signup():
 
 @app.route("/index", methods=["GET"])
 def index():
+    if not session.get("name"):
+        return redirect(url_for('login'))
     msg = request.args.get("msg")
     return render_template("index.html", message = msg)
 
