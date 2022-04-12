@@ -196,7 +196,7 @@ def add_museum():
 
 @app.route('/favicon.ico') 
 def favicon(): 
-    return
+    return app.send_static_file('favicon.ico')
 
 # receive JSON object
 @app.route("/json-request", methods=["POST"])

@@ -8,10 +8,10 @@ connection.startConnection()
 
 query = "SELECT museum_name FROM Museums"
 results = connection.query(query)
-results = results[972:] # Move 1 before current
+results = results[1889:] # Move 1 before current
 
 # Move with 1 before current
-for index, museum in enumerate(results, 972):
+for index, museum in enumerate(results, 1889):
     print("\n\n\n" + str(index+1))
     
     img = search_museum(museum[0])
