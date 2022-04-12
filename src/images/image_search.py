@@ -2,6 +2,7 @@ from typing import Dict
 import requests
 import re
 import json
+import time
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -15,8 +16,6 @@ def search(keywords: str, max_results = None) -> Dict:
 
     logger.debug("Hitting DuckDuckGo for Token")
 
-    #   First make a request to above URL, and parse out the 'vqd'
-    #   This is a special token, which should be used in the subsequent request
     res = requests.post(url, data=params)
     searchObj = re.search(r'vqd=([\d-]+)\&', res.text, re.M|re.I)
 
@@ -52,9 +51,33 @@ def search(keywords: str, max_results = None) -> Dict:
 
     logger.debug("1, Hitting Url : %s", requestUrl)
 
-    response = requests.get(requestUrl, headers=headers, params=params)
-    data = json.loads(response.text)
+    while True:
+        try:
+            res = requests.get(requestUrl, headers=headers, params=params)
+            data = json.loads(res.text)
+            break
+        except ValueError as e:
+            logger.debug("Hitting Url Failure - Sleep and Retry: %s", requestUrl)
+            time.sleep(4)
+            continue
+
     return data
+    # response = requests.get(requestUrl, headers=headers, params=params)
+    # data = json.loads(response.text)
+    # return data
+
+def search_museum(name: str, num_results = 5) -> dict:
+        
+        results = search(name)
+        result = results["results"]
+
+        data: dict = {}
+        for i in range(num_results):
+            key_image = "image_" + str(i+1)
+            data[key_image] = result[i]["image"]
+            key_thumb = "thumbnail_" + str(i+1)
+            data[key_thumb] = result[i]["thumbnail"]
+        return data
 
 
 if __name__ == "__main__":
