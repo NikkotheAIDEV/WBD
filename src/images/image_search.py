@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-def search(keywords: str, max_results = None) -> Dict:
+def search(keywords: str) -> Dict:
     url = 'https://duckduckgo.com/'
     params = {
     	'q': keywords
@@ -17,9 +17,9 @@ def search(keywords: str, max_results = None) -> Dict:
     logger.debug("Hitting DuckDuckGo for Token")
 
     res = requests.post(url, data=params)
-    searchObj = re.search(r'vqd=([\d-]+)\&', res.text, re.M|re.I)
+    search_obj = re.search(r'vqd=([\d-]+)\&', res.text, re.M|re.I)
 
-    if not searchObj:
+    if not search_obj:
         logger.error("Token Parsing Failed !")
         return -1
 
@@ -41,28 +41,28 @@ def search(keywords: str, max_results = None) -> Dict:
         ('l', 'us-en'),
         ('o', 'json'),
         ('q', keywords),
-        ('vqd', searchObj.group(1)),
+        ('vqd', search_obj.group(1)),
         ('f', ',,,'),
         ('p', '1'),
         ('v7exp', 'a'),
     )
 
-    requestUrl = url + "i.js"
+    request_url = url + "i.js"
 
-    logger.debug("1, Hitting Url : %s", requestUrl)
+    logger.debug("1, Hitting Url : %s", request_url)
 
     while True:
         try:
-            res = requests.get(requestUrl, headers=headers, params=params)
+            res = requests.get(request_url, headers=headers, params=params)
             data = json.loads(res.text)
             break
-        except ValueError as e:
-            logger.debug("Hitting Url Failure - Sleep and Retry: %s", requestUrl)
+        except ValueError:
+            logger.debug("Hitting Url Failure - Sleep and Retry: %s", request_url)
             time.sleep(4)
             continue
 
     return data
-    # response = requests.get(requestUrl, headers=headers, params=params)
+    # response = requests.get(request_url, headers=headers, params=params)
     # data = json.loads(response.text)
     # return data
 
