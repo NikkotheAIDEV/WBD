@@ -23,9 +23,5 @@ for index, museum in enumerate(results):
         connection.insert_prepared_statement(query_insert_img, tuple1)
     else:
         continue
-
-# print(results[0])
-# test = search_museum(results[0])
-# print(test)
-
+    
 connection.stopConnection()

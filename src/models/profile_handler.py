@@ -9,16 +9,17 @@ class ProfileHandler:
         password = password.encode('utf8')
 
         connection.startConnection()
-        query = "SELECT id, hashed_password FROM Person WHERE username = \"{}\"".format(username)
+        query = "SELECT id, most_liked_category_id, hashed_password FROM Person WHERE username = \"{}\"".format(username)
         result = connection.query(query)
         id = result[0][0]
-        hashed_password = result[0][1]
+        fav_category = result[0][1]
+        hashed_password = result[0][2]
         hashed_password = hashed_password.encode('utf8')
 
         if bcrypt.checkpw(password, hashed_password):
             print("match")
             connection.stopConnection()
-            return id
+            return [id, fav_category]
         else:
             connection.stopConnection()
             return False

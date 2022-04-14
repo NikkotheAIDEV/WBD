@@ -34,7 +34,9 @@ def login():
         result = profile_handler.ProfileHandler().log_in(username, password)
         if result != False:
             session["name"] = username
-            session["id"] = result
+            session["id"] = result[0]
+            session["fav_category"] = result[1]
+
             return redirect(url_for('index'))
     return render_template("login.html")
 
@@ -61,8 +63,23 @@ def signup():
 def index():
     if not session.get("name"):
         return redirect(url_for('login'))
+    
+    __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
+    __museum.startConnection()
+    results_ids = __museum.request_favourite(session.get("fav_category"), 21)
+
+    results = []
+    for r in results_ids:
+        results.append(__museum.search_museum_by_id(r))
+    __museum.stopConnection()
+
+    _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitude', 'latitude', 'image_url']
+    museum_dicts = [dict(zip(_fields, r[0])) for  r in results]
+    item_list = [Item(i) for i in museum_dicts]
+    museum_results = item_list
+
     msg = request.args.get("msg")
-    return render_template("index.html", message = msg)
+    return render_template("index.html", message = msg, museums = museum_results)
 
 class Item:
     def __init__(self, vals):
@@ -76,15 +93,17 @@ def results():
 
 @app.route("/index", methods=['POST'])
 def search_museum():
+    # Search
     museum_keyword = request.form.get("search_museums")
     museum_keyword = str(museum_keyword)
-    __museum = museum.Museum("some", "random", "info", "for", "object") #this object is not for insertion. It is created so the search method inside can be used.
+    __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
     __museum.startConnection()
     results = __museum.search_museum_by_name(museum_keyword, limit=100)
     __museum.stopConnection()
     #add field names
     _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute']
     museum_dicts = [dict(zip(_fields, r)) for r in results]
+    print(museum_dicts)
     #do some magic so it works.
     item_list = [Item(i) for i in museum_dicts]
     global museum_results

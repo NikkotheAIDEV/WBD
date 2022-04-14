@@ -1,48 +1,70 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <style>
+        .parent {
+            position: relative;
+            top: 0;
+            left: 0;
+          }
+          
+          .image1 {
+            position: relative;
+            top: 15px;
+            left: 0;
+            border: 1px solid #000000;
+          }
+          
+          .image2 {
+            position: absolute;
+            top: 15px;
+            left: 58px;
+            border: 1px solid #000000;
+          }
+    </style>
+{% endblock %}
+
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">WBD</a>
-     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Menu
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{{ url_for('add_museum') }}">Add Museum</a></li>
-                    <li><a class="dropdown-item" href="{{ url_for('add_interest') }}">Add Interest</a></li>
-                </ul>
-            </li> 
-          <!--END-->
-        </ul>
-        <ul class="mb-2 mb-lg-0">
-            <form method="post" class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" name="search_museums" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </ul>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Menu
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{{ url_for('add_museum') }}">Add Museum</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('add_interest') }}">Add Interest</a></li>
+            </ul>
+        </li> 
+    </ul>
+    <ul class="mb-2 mb-lg-0">
+        <form method="post" class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" name="search_museums" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </ul>
+</nav>
 
-  </nav>
-
-<!--
-<ul class="list-unstyled ms-3 mt-3"> 
-    <li>
-        <a href="{{ url_for('add_person') }}" class="btn">Add Person</a>
-    </li>
-
-    <li>
-        <a href="{{ url_for('add_interest') }}" class="btn">Add Interest</a>
-    </li>
-
-    <li>
-        <a href="{{ url_for('add_museum') }}" class="btn">Add Museum</a>
-    </li>
-</ul>
--->
+<div class="container-fluid" id="example">
+    <div class="row text-center">
+        {% for museum in museums %}
+            <div class="col-4 border">
+                <div class="parent">
+                    <img class="image1" src="{{museums[0].image_url}}" width=350 height=225 alt="default" />
+                    <img class="image2" src="{{museum.image_url}}" width=350 height=225 alt="{{museum.name}}" />     
+                </div>
+                <p class="pt-4">
+                    {{museum.name}}
+                </p>
+            </div>
+        {% endfor%}
+    </div>
+</div>
 
 {% endblock %}
