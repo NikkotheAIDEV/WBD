@@ -13,13 +13,15 @@
             top: 15px;
             left: 0;
             border: 1px solid #000000;
+            border-radius: 5%;
           }
           
           .image2 {
             position: absolute;
             top: 15px;
-            left: 58px;
+            left: 61px;
             border: 1px solid #000000;
+            border-radius: 5%;
           }
     </style>
 {% endblock %}
@@ -54,10 +56,10 @@
 <div class="container-fluid">
     <div class="row text-center">
         {% for museum in museums %}
-            <div class="col-4 border">
+            <div class="col border">
                 <div class="parent">
-                    <img class="image1" src="{{museums[0].image_url}}" width=350 height=225 alt="default" />
-                    <img class="image2" src="{{museum.image_url}}" width=350 height=225 alt="{{museum.name}}" />     
+                    <img class="image1" src="{{museums[0].image_url}}" width=350 height=225 alt="default" /> 
+                    <img class="image2" src="{{museum.image_url}}" width=350 height=225 alt="{{museum.name}}" />
                 </div>
                 <p class="pt-4">
                     {{museum.name}}

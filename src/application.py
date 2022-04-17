@@ -1,9 +1,6 @@
 from crypt import methods
-# from WBD.src.models.profile_handler import ProfileHandler
 from flask import Flask, request, render_template, redirect, session, url_for
 from flask_session import Session
-# from flask_restful import Resource, Api, reqparse
-# from query import Connection
 from models import category, person, interest, museum, profile_handler
 
 
@@ -66,7 +63,7 @@ def index():
     
     __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
     __museum.startConnection()
-    results_ids = __museum.request_favourite(session.get("fav_category"), 21)
+    results_ids = __museum.request_favourite(session.get("fav_category"), 30)
 
     results = []
     for r in results_ids:
@@ -103,7 +100,6 @@ def search_museum():
     #add field names
     _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute']
     museum_dicts = [dict(zip(_fields, r)) for r in results]
-    print(museum_dicts)
     #do some magic so it works.
     item_list = [Item(i) for i in museum_dicts]
     global museum_results
