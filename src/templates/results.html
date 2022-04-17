@@ -13,10 +13,14 @@
     </nav>
 
  {% for museum_dict in museums %}
-        <div class="h-30 w-55 mt-3 ms-3">
-            <p>{{ museum_dict.name }}</p>
-            <small class="form-text text-muted mb-3">Rating: {{ round(((5-1)*(museum_dict.rating-0)/1-0)+1) }}</small> 
-            <!-- {{ ((5-1)*(museum_dict.rating-0)/1-0)+1 }} -->
+        <div class="h-300 w-500 mt-4 ms-4">
+            <div style="display:inline-block;vertical-align:top;">
+                <img src="{{museum_dict.image_url}}" width=350 height=200>
+            </div>
+            <div style="display:inline-block;">
+                <p>{{ museum_dict.name }}</p>
+                <small class="form-text text-muted mt-auto">Rating: {{ round(((5-1)*(museum_dict.rating-0)/1-0)+1) }}</small>
+            </div>
         </div>
  {% endfor %}
 <!-- </ul> -->

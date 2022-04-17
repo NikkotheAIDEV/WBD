@@ -10,6 +10,7 @@ if [ ! -d "$DIR" ]; then
     virtualenv env -q
 
     source env/bin/activate
+    cd src/
 
     echo "Installing requirments"
     pip3 install -r requirements.txt

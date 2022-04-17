@@ -27,7 +27,6 @@ def login():
         password = str(password)
         username = str(username)
 
-
         result = profile_handler.ProfileHandler().log_in(username, password)
         if result != False:
             session["name"] = username
@@ -36,6 +35,11 @@ def login():
 
             return redirect(url_for('index'))
     return render_template("login.html")
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.clear()
+    return redirect("login")
 
 @app.route("/", methods=["GET", "POST"])
 def signup():
@@ -98,7 +102,7 @@ def search_museum():
     results = __museum.search_museum_by_name(museum_keyword, limit=100)
     __museum.stopConnection()
     #add field names
-    _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute']
+    _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
     museum_dicts = [dict(zip(_fields, r)) for r in results]
     #do some magic so it works.
     item_list = [Item(i) for i in museum_dicts]
