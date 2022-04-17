@@ -1,38 +1,57 @@
-
 from models.consts import DATABASE, HOST, PASSWORD, USER
 from query import Connection
+import random
+import numpy as np
 class Museum(Connection):
     # __database_conn = None
-    def __init__(self, name, address, country, rating, category) -> None:
+    def __init__(self, name, address, country, rating, category, longitude, latitude, image_url) -> None:
         self.museum_name = name
         self.museum_address = address
         self.country = country
         self.rating = rating
         self.museum_category = category
+        self.longitude = longitude
+        self.latitude = latitude
+        self.image_url = image_url
         super().__init__(HOST, DATABASE, USER, PASSWORD)
-        # __database_conn = Connection(HOST, DATABASE, USER, PASSWORD)
-        # __database_conn.startConnection()
 
-    # def insert_category(self):
-    #         cursor = self.__database_conn.db_conn.cursor(prepared=True)
-    #         insert_query = """INSERT INTO Categories (category_name) VALUES(%s)"""
-    #         tuple1 = (self.category_name)
+    def request_favourite(self, id, number = 6) -> list:
+        query_favourites = "SELECT id FROM Museums WHERE category_id = {} ORDER BY avg_rating DESC LIMIT 100".format(id)
+        records_favourite = self.query(query_favourites)
+        data_favourites = np.array(records_favourite)
+        fav_arr = []
 
-    #         cursor.execute(insert_query, tuple1)
-    #         self.__database_conn.connection_commit()
-    #         cursor.close()
-    #         print("Data inserted successfully")
+        already_inserted = []
+        while len(fav_arr) < number:
+            z = random.randrange(1,100)
+            if z not in already_inserted:
+                fav_arr.append(data_favourites[z][0])
+                already_inserted.append(z)
 
-    # def get_from_cateogry_with_limit(self, limit):
-    #     # Create object
-    #     pass
+        return fav_arr
 
-    # def close_connection(self):
-    #    self.__database_conn.stopConnection()
+    # Get a 100 museums in interested_in category and select 4
+    def request_interested(self, id = [], number = 4) -> tuple:
 
-    # def search_muesum(name, limit = 100, offset = 0) -> list:
-    #     results = search_museum()
-    #     # search_query = "SELECT * FROM Museums WHERE museum_name LIKE '%{}%' LIMIT {} OFFSET {}".format(name, limit, offset)
-    #     # results = self.connection.query(search_query)
-    #     # return results
+        ids = ""
+        for x in range(len(id)):
+            if ids == "":
+                ids = ids + ("{}").format(id[x])
+            else:
+                ids = ids + (", {}").format(id[x])
 
+        query_interested_in = "SELECT id FROM Museums WHERE category_id IN ({}) AND (avg_rating > 0.5) ORDER BY id ASC LIMIT 100".format(ids)
+        records_interested_in = self.query(query_interested_in)
+        data_interested_in = np.array(records_interested_in)
+        interested_in = ()
+
+        already_inserted = []
+        for _ in range(number):
+            while True:
+                z = random.randrange(1, 100)
+                if z not in already_inserted:
+                    interested_in.append(data_interested_in[z, 0])
+                    already_inserted.append(z)
+                    break
+
+        return interested_in

@@ -11,12 +11,12 @@ CREATE TABLE Museums (
     museum_name VARCHAR(177) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     country VARCHAR(37) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     address VARCHAR(177) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    avg_rating DOUBLE,
+    avg_rating DECIMAL(5, 2),
     category_id BIGINT,
     FOREIGN KEY (category_id) REFERENCES Categories(id),
     longitude Double,
     latitude Double,
-    image_url VARCHAR(177) DEFAULT NULL
+    image_url VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 );
 
 CREATE TABLE Person (

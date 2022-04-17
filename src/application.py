@@ -1,9 +1,6 @@
 from crypt import methods
-# from WBD.src.models.profile_handler import ProfileHandler
 from flask import Flask, request, render_template, redirect, session, url_for
 from flask_session import Session
-# from flask_restful import Resource, Api, reqparse
-# from query import Connection
 from models import category, person, interest, museum, profile_handler
 
 
@@ -30,12 +27,19 @@ def login():
         password = str(password)
         username = str(username)
 
-
         result = profile_handler.ProfileHandler().log_in(username, password)
-        if result:
+        if result != False:
             session["name"] = username
+            session["id"] = result[0]
+            session["fav_category"] = result[1]
+
             return redirect(url_for('index'))
     return render_template("login.html")
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.clear()
+    return redirect("login")
 
 @app.route("/", methods=["GET", "POST"])
 def signup():
@@ -60,8 +64,23 @@ def signup():
 def index():
     if not session.get("name"):
         return redirect(url_for('login'))
+    
+    __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
+    __museum.startConnection()
+    results_ids = __museum.request_favourite(session.get("fav_category"), 30)
+
+    results = []
+    for r in results_ids:
+        results.append(__museum.search_museum_by_id(r))
+    __museum.stopConnection()
+
+    _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitude', 'latitude', 'image_url']
+    museum_dicts = [dict(zip(_fields, r[0])) for  r in results]
+    item_list = [Item(i) for i in museum_dicts]
+    museum_results = item_list
+
     msg = request.args.get("msg")
-    return render_template("index.html", message = msg)
+    return render_template("index.html", message = msg, museums = museum_results)
 
 class Item:
     def __init__(self, vals):
@@ -75,14 +94,15 @@ def results():
 
 @app.route("/index", methods=['POST'])
 def search_museum():
+    # Search
     museum_keyword = request.form.get("search_museums")
     museum_keyword = str(museum_keyword)
-    __museum = museum.Museum("some", "random", "info", "for", "object") #this object is not for insertion. It is created so the search method inside can be used.
+    __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
     __museum.startConnection()
     results = __museum.search_museum_by_name(museum_keyword, limit=100)
     __museum.stopConnection()
     #add field names
-    _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute']
+    _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
     museum_dicts = [dict(zip(_fields, r)) for r in results]
     #do some magic so it works.
     item_list = [Item(i) for i in museum_dicts]
@@ -132,35 +152,17 @@ def add_interest():
         #TODO: implement preference with dictionary
         preference = request.form.get("dropdown_preference")
         preference = int(preference)
-        user_id = request.form.get("user_id")
+        user_id = session.get("id")
         user_id = int(user_id)
         tuple1 = (user_id, preference)
         interest_in = interest.Interest(user_id ,preference)
-        interest_in.startConnection()
-        interest_in.insert_prepared_statement("INSERT INTO Interested_in VALUES(NULL, %s, %s)")
-        interest_in.stopConnection()
-        return redirect(url_for('index'))
-
-    # if method is [GET], present the form
-    return render_template("add_interest.html")
-
-@app.route("/add-visit", methods=["GET", "POST"])
-def add_visit():
-    if request.method == "POST":
-        #TODO: implement preference with dictionary
-        preference = request.form.get("dropdown_preference")
-        preference = int(preference)
-        user_id = request.form.get("user_id")
-        user_id = int(user_id)
-        interest_in = interest.Interest(user_id ,preference)
-        tuple1 = (interest_in.user_id, interest_in.preference)
         interest_in.startConnection()
         interest_in.insert_prepared_statement("INSERT INTO Interested_in VALUES(NULL, %s, %s)", tuple1)
         interest_in.stopConnection()
         return redirect(url_for('index'))
 
     # if method is [GET], present the form
-    return render_template("add_visit.html")
+    return render_template("add_interest.html")
 
 # form request.
 @app.route("/add-museum", methods=["GET", "POST"])
@@ -170,12 +172,17 @@ def add_museum():
         museum_address = request.form.get("museum_adress")
         country = request.form.get("country_dropdown")
         rating = request.form.get("rating")
+        rating = float(rating)
+        rating = ((1-0)*(rating-0)/5-0)+0
+        rating = round(rating, 2)
+        print(rating)
         museum_category = request.form.get("category_dropdown")
         museum_category = int(museum_category)
         museum_obj = museum.Museum(museum_name.upper(), museum_address, country, rating, museum_category)
         tuple1 = (museum_obj.museum_name, museum_obj.country, museum_obj.museum_address, museum_obj.rating, museum_obj.museum_category)
         museum_obj.startConnection()
-        museum_obj.insert_prepared_statement("INSERT INTO Museums VALUES(NULL, %s, %s, %s, %s, %s, 0, 0)", tuple1)
+        query = "INSERT INTO Museums VALUES(NULL, %s, %s, %s, %s, %s, 0, 0, NULL, NULL)"
+        museum_obj.insert_prepared_statement(query, tuple1)
         museum_obj.stopConnection()
     
         return redirect(url_for('index'))
@@ -196,7 +203,7 @@ def add_museum():
 
 @app.route('/favicon.ico') 
 def favicon(): 
-    return
+    return app.send_static_file('favicon.ico')
 
 # receive JSON object
 @app.route("/json-request", methods=["POST"])

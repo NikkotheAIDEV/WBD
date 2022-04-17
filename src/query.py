@@ -37,7 +37,7 @@ class Connection:
         print("data inserted")
         cursor.close()
 
-    def get_preapred_statement(self, query, data, limit = 100, offset = 0):
+    def get_preapred_statement(self, query, data):
         cursor = self.db_conn.cursor(prepared=True)
         cursor.execute(query, data)
         records = cursor.fetchall()

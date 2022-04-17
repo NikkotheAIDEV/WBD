@@ -9,15 +9,17 @@ class ProfileHandler:
         password = password.encode('utf8')
 
         connection.startConnection()
-        query = "SELECT hashed_password FROM Person WHERE username = \"{}\"".format(username)
-        hashed_password = connection.query(query)
-        hashed_password = hashed_password[0][0]
+        query = "SELECT id, most_liked_category_id, hashed_password FROM Person WHERE username = \"{}\"".format(username)
+        result = connection.query(query)
+        user_id = result[0][0]
+        fav_category = result[0][1]
+        hashed_password = result[0][2]
         hashed_password = hashed_password.encode('utf8')
 
         if bcrypt.checkpw(password, hashed_password):
             print("match")
             connection.stopConnection()
-            return True
+            return [user_id, fav_category]
         else:
             connection.stopConnection()
             return False
@@ -38,17 +40,8 @@ class ProfileHandler:
         hashed_password = bcrypt.hashpw(password, salt)
         hashed_password = hashed_password.decode('utf8')
 
-        query = "INSERT INTO Person VALUE (NULL, \"{}\", \"{}\", \"{}\", \"{}\", {});".format(first_name, sur_name, username, hashed_password, fav_category)
-        connection.insert_prepared_statement(query, None)
+        query = "INSERT INTO Person VALUE (NULL, %s, %s, %s, %s, %s);"
+        tuple1 = (first_name, sur_name, username, hashed_password, str(fav_category))
+        connection.insert_prepared_statement(query, tuple1)
 
         connection.stopConnection()
-
-# TESTS
-# profile = ProfileHandler()
-# profile.register("Vladislav", "Terziev", "VladiT", "Terziev123", 3)
-# profile.register("Ivan", "Terziev", "Vankata38", "Terziev123", 3)
-
-# profile.log_in("VladiT", "Terziev123")
-# profile.log_in("Vankata38", "Terziev123")
-
-# connection.stopConnection()
