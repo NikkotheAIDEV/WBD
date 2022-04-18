@@ -3,7 +3,6 @@ from flask import Flask, request, render_template, redirect, session, url_for
 from flask_session import Session
 from models import category, person, interest, museum, profile_handler
 
-
 # Utility function passed to the html template for calculation.
 def round_num(x):
     return round(x)
@@ -60,56 +59,96 @@ def signup():
 
     return render_template("signup.html")
 
-@app.route("/index", methods=["GET"])
-def index():
-    if not session.get("name"):
-        return redirect(url_for('login'))
-    
-    __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
-    __museum.startConnection()
-    results_ids = __museum.request_favourite(session.get("fav_category"), 30)
-
-    results = []
-    for r in results_ids:
-        results.append(__museum.search_museum_by_id(r))
-    __museum.stopConnection()
-
-    _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitude', 'latitude', 'image_url']
-    museum_dicts = [dict(zip(_fields, r[0])) for  r in results]
-    item_list = [Item(i) for i in museum_dicts]
-    museum_results = item_list
-
-    msg = request.args.get("msg")
-    return render_template("index.html", message = msg, museums = museum_results)
-
 class Item:
     def __init__(self, vals):
         self.__dict__ = vals
 
 museum_results = []
+museum_detail = []
 
-@app.route("/results", methods=["GET"])
+@app.route("/results", methods=["GET","POST"])
 def results():
-    return render_template('results.html', museums = museum_results)
+    if request.method == "POST":
+        if request.form['btn_id'] == 'detailed_view':
+            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage")
+            __museum.startConnection()
+            
+            museum_id = request.form.get("museum_id")
+            result_museum = __museum.search_museum_by_id(museum_id)
+            __museum.stopConnection()
 
-@app.route("/index", methods=['POST'])
-def search_museum():
-    # Search
-    museum_keyword = request.form.get("search_museums")
-    museum_keyword = str(museum_keyword)
-    __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
-    __museum.startConnection()
-    results = __museum.search_museum_by_name(museum_keyword, limit=100)
-    __museum.stopConnection()
-    #add field names
-    _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
-    museum_dicts = [dict(zip(_fields, r)) for r in results]
-    #do some magic so it works.
-    item_list = [Item(i) for i in museum_dicts]
-    global museum_results
-    museum_results = item_list
-    return redirect(url_for('results'))
+            _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
+            museum_dict = dict(zip(_fields, result_museum[0]))
+            global museum_detail
+            museum_detail = Item(museum_dict)
 
+            return redirect(url_for('detailed'))
+
+    if request.method == "GET":
+        return render_template('results.html', museums = museum_results)
+
+@app.route("/detailed", methods=["GET"])
+def detailed():
+    if museum_results == []:
+        return redirect(url_for("index"))
+    else:
+        return render_template('detailed_view.html', museum = museum_detail)
+
+@app.route("/index", methods=['GET','POST'])
+def index():
+    if request.method == "GET":
+        if not session.get("name"):
+            return redirect(url_for('login'))
+        
+        __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
+        __museum.startConnection()
+        results_ids = __museum.request_favourite(session.get("fav_category"), 30)
+
+        results = []
+        for r in results_ids:
+            results.append(__museum.search_museum_by_id(r))
+        __museum.stopConnection()
+
+        _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitude', 'latitude', 'image_url']
+        museum_dicts = [dict(zip(_fields, r[0])) for  r in results]
+        item_list = [Item(i) for i in museum_dicts]
+        global museum_results
+        museum_results = item_list
+
+        msg = request.args.get("msg")
+        return render_template("index.html", message = msg, museums = museum_results)
+    
+    if request.method == "POST":
+        if request.form['btn_id'] == 'search':
+            museum_keyword = request.form.get("search_museums")
+            museum_keyword = str(museum_keyword)
+            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
+            __museum.startConnection()
+            results = __museum.search_museum_by_name(museum_keyword, limit=100)
+            __museum.stopConnection()
+            #add field names
+            _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
+            museum_dicts = [dict(zip(_fields, r)) for r in results]
+            #do some magic so it works.
+            item_list = [Item(i) for i in museum_dicts]
+            museum_results = item_list
+            return redirect(url_for('results'))
+
+        if request.form['btn_id'] == 'detailed_view':
+            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage")
+            __museum.startConnection()
+            
+            museum_id = request.form.get("museum_id")
+            result_museum = __museum.search_museum_by_id(museum_id)
+            __museum.stopConnection()
+
+            _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
+            museum_dict = dict(zip(_fields, result_museum[0]))
+            global museum_detail
+            museum_detail = Item(museum_dict)
+
+            return redirect(url_for('detailed'))
+    
 # add category
 @app.route("/add-category", methods=["GET", "POST"])
 def add_category():
@@ -186,23 +225,10 @@ def add_museum():
         museum_obj.stopConnection()
     
         return redirect(url_for('index'))
-
-#         import requests
-#         import urllib.parse
-
-# address = 'Shivaji Nagar, Bangalore, KA 560001'
-# url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
-
-# response = requests.get(url).json()
-# print(response[0]["lat"])
-# print(response[0]["lon"])
-    # print("National Museum".upper())
-    # if method is [GET], present the form
     return render_template("add_museum.html")
 
-
-@app.route('/favicon.ico') 
-def favicon(): 
+@app.route('/favicon.ico')
+def favicon():
     return app.send_static_file('favicon.ico')
 
 # receive JSON object
@@ -210,6 +236,5 @@ def favicon():
 def json_request():
     return "JSON request example"
 
-    
 if __name__ == "__main__":
      app.run(debug=True)

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Museum</a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{url_for('index')}}">Home</a>
+                  </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="h-700 mw-100 mt-2 ms-4">
+        <div class="rounded w-600 h-500" style="display:inline-block;vertical-align:top; min-width:600px; min-height: 500px; position: relative;">
+            <img class="rounded" style="position: absolute; top: 0px; left: 0px; z-index: 3; background-size: cover; background-position: center center; background-image: url('{{museum.image_url}}');" width=600 height=500 type="image/png" />
+            <img class="rounded" style="position: absolute; top: 0px; left: 0px; z-index: 2;" src="https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png" width=600 height=500 alt="museum-image" />
+        </div>
+        <div class="mapouter ms-3" style="display:inline-block;">
+            <div class="gmap_canvas">
+                <iframe width="550" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=@{{museum.lantitute}},{{museum.longitute}}&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+            </div>
+        </div>
+        <div class="ms-3" style="display:inline-block; vertical-align:top;">
+            <h1>{{ museum.name }}</h1>
+            <p><strong>Home country:</strong> {{ museum.country }}</p>
+            <p><strong>Address:</strong> {{museum.address}}</p>
+            <p><strong>Average rating:</strong> {{ round(((5-1)*(museum.rating-0)/1-0)+1) }}</p>
+            {% if museum.category == 1 %}
+                <p><strong>Museum category: </strong>Art Museums<p>
+            {% elif museum.category == 2 %}
+                <p><strong>Museum category: </strong>Arboretums, Botanical Gardens, & Nature Centers<p>
+            {% elif museum.category == 3 %}
+                <p><strong>Museum category: </strong>Children's Museums<p> 
+            {% elif museum.category == 4 %}
+                <p><strong>Museum category: </strong>Uncategorized or General Museums<p> 
+            {% elif museum.category == 5 %}
+                <p><strong>Museum category: </strong>Historical Societies, Historic Preservation<p> 
+            {% elif museum.category == 6 %}
+                <p><strong>Museum category: </strong>History Museums<p>
+            {% elif museum.category == 7 %}
+                <p><strong>Museum category: </strong>Natural History & Natural Science Museums<p> 
+            {% elif museum.category == 8 %}
+                <p><strong>Museum category: </strong>Science & Technology Museums & Planetariums<p> 
+            {% elif museum.category == 9 %}
+                <p><strong>Museum category: </strong>Zoos, Aquariums, & Wildlife Conservation<p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

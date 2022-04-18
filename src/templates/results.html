@@ -14,10 +14,15 @@
 
  {% for museum_dict in museums %}
         <div class="h-300 w-500 mt-4 ms-4">
-            <div class="rounded w-350 h-225" style="display:inline-block;vertical-align:top; min-width:350px; min-height: 225px; position: relative;">
-                <img class="rounded" style="position: absolute; top: 0px; left: 0px; z-index: 3; background-size: cover; background-position: center center; background-image: url('{{museum_dict.image_url}}');" width=350 height=225 type="image/png" />
-                <img class="rounded" style="position: absolute; top: 0px; left: 0px; z-index: 2;" src="https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png" width=350 height=225 alt="museum-image" />
-            </div>
+            <form method="post">
+                <input type="hidden" name="museum_id" value="{{museum_dict.id}}">
+                <button class="rounded mt-3 w-350 h-225" style="display:inline-block;vertical-align:top; min-width:350px; min-height: 225px; position: relative;" name="btn_id" value="detailed_view">
+                    <div class="rounded w-350 h-225">
+                        <img class="rounded" style="position: absolute; top: -2px; left: -2px; z-index: 3; background-size: cover; background-position: center center; background-image: url('{{museum_dict.image_url}}');" width=350 height=225 type="image/png" />
+                        <img class="rounded" style="position: absolute; top: -2px; left: -2px; z-index: 2;" src="https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png" width=350 height=225 alt="museum-image" />
+                    </div>
+                </button>
+            </form>
             <div style="display:inline-block;">
                 <p>{{ museum_dict.name }}</p>
                 <small class="form-text text-muted mt-auto">Rating: {{ round(((5-1)*(museum_dict.rating-0)/1-0)+1) }}</small>
