@@ -36,14 +36,18 @@
     <div class="row text-center">
         {% for museum in museums %}
             <div class="col border">
-                <div class="rounded w-350 h-225">
-                    <object class="rounded mt-4" data="{{museum.image_url}}" width=350 height=225 type="image/png">
-                        <img class="rounded" src="https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png" width=350 height=225 alt="museum-image">
-                    </object>
-                </div>
-                <p class="pt-4">
-                    {{museum.name}}
-                </p>
+                    <div class="rounded-lg w-350 h-225" style="display:inline-block;vertical-align:top; min-width:350px; min-height: 225px; position: relative;">
+                        <form method="post" class="d-flex">
+                            <input type="hidden" name="btn_id" value >
+                            <button class="btn btn-outline-success" type="submit">
+                                <img class="rounded" style="position: absolute; top: 15px; left: 0px; z-index: 3; background-size: cover; background-position: center center; background-image: url('{{museum.image_url}}');" width=350 height=225 type="image/png" />
+                                <img class="rounded" style="position: absolute; top: 15px; left: 0px; z-index: 2;" src="https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png" width=350 height=225 alt="museum-image" />
+                            </button>
+                        </form>
+                    </div>
+                    <p class="pt-4">
+                        {{museum.name}}
+                    </p>
             </div>
         {% endfor%}
     </div>
