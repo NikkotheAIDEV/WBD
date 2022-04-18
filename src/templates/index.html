@@ -1,31 +1,5 @@
 {% extends 'base.html' %}
 
-{% block head %}
-    <style>
-        .parent {
-            position: relative;
-            top: 0;
-            left: 0;
-          }
-          
-          .image1 {
-            position: relative;
-            top: 15px;
-            left: 0;
-            border: 1px solid #000000;
-            border-radius: 5%;
-          }
-          
-          .image2 {
-            position: absolute;
-            top: 15px;
-            left: 58px;
-            border: 1px solid #000000;
-            border-radius: 5%;
-          }
-    </style>
-{% endblock %}
-
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
     <div class="container-fluid">
@@ -62,9 +36,10 @@
     <div class="row text-center">
         {% for museum in museums %}
             <div class="col border">
-                <div class="parent">
-                    <img class="image1" src="{{museums[0].image_url}}" width=350 height=225 alt="default" /> 
-                    <img class="image2" src="{{museum.image_url}}" width=350 height=225 />
+                <div class="rounded w-350 h-225">
+                    <object class="rounded mt-4" data="{{museum.image_url}}" width=350 height=225 type="image/png">
+                        <img class="rounded" src="https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png" width=350 height=225 alt="museum-image">
+                    </object>
                 </div>
                 <p class="pt-4">
                     {{museum.name}}

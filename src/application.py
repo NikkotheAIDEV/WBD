@@ -175,13 +175,13 @@ def add_museum():
         rating = float(rating)
         rating = ((1-0)*(rating-0)/5-0)+0
         rating = round(rating, 2)
-        print(rating)
         museum_category = request.form.get("category_dropdown")
         museum_category = int(museum_category)
-        museum_obj = museum.Museum(museum_name.upper(), museum_address, country, rating, museum_category)
-        tuple1 = (museum_obj.museum_name, museum_obj.country, museum_obj.museum_address, museum_obj.rating, museum_obj.museum_category)
+        museum_image_url = request.form.get("museum_url")
+        museum_obj = museum.Museum(museum_name.upper(), museum_address, country, rating, museum_category, "NULL", "NULL", museum_image_url)
+        tuple1 = (museum_obj.museum_name, museum_obj.country, museum_obj.museum_address, museum_obj.rating, museum_obj.museum_category, museum_obj.image_url)
         museum_obj.startConnection()
-        query = "INSERT INTO Museums VALUES(NULL, %s, %s, %s, %s, %s, 0, 0, NULL, NULL)"
+        query = "INSERT INTO Museums VALUES(NULL, %s, %s, %s, %s, %s, NULL, NULL, %s)"
         museum_obj.insert_prepared_statement(query, tuple1)
         museum_obj.stopConnection()
     

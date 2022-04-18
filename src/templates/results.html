@@ -1,5 +1,31 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <style>
+        .parent {
+            position: relative;
+            top: 0;
+            left: 0;
+          }
+          
+          .image1 {
+            position: relative;
+            top: 15px;
+            left: 0;
+            border: 1px solid #000000;
+            border-radius: 5%;
+          }
+          
+          .image2 {
+            position: absolute;
+            top: 15px;
+            left: 0px;
+            border: 1px solid #000000;
+            border-radius: 5%;
+          }
+    </style>
+{% endblock %}
+
 {% block content %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -14,8 +40,10 @@
 
  {% for museum_dict in museums %}
         <div class="h-300 w-500 mt-4 ms-4">
-            <div style="display:inline-block;vertical-align:top;">
-                <img src="{{museum_dict.image_url}}" width=350 height=200>
+            <div class="rounded w-350 h-225" style="display:inline-block;vertical-align:top;">
+                <object class="rounded" data="{{museum_dict.image_url}}" width=350 height=225 type="image/png">
+                    <img class="rounded" src="https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png" width=350 height=225 alt="museum-image">
+                </object>
             </div>
             <div style="display:inline-block;">
                 <p>{{ museum_dict.name }}</p>
