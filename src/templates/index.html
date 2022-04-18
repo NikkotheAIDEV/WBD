@@ -1,31 +1,5 @@
 {% extends 'base.html' %}
 
-{% block head %}
-    <style>
-        .parent {
-            position: relative;
-            top: 0;
-            left: 0;
-          }
-          
-          .image1 {
-            position: relative;
-            top: 15px;
-            left: 0;
-            border: 1px solid #000000;
-            border-radius: 5%;
-          }
-          
-          .image2 {
-            position: absolute;
-            top: 15px;
-            left: 58px;
-            border: 1px solid #000000;
-            border-radius: 5%;
-          }
-    </style>
-{% endblock %}
-
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
     <div class="container-fluid">
@@ -48,7 +22,7 @@
     <ul class="mb-2 mb-lg-0">
         <form method="post" class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" name="search_museums" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-outline-success" type="submit" name="btn_id" value="search">Search</button>
         </form>
     </ul>
     <ul class="navbar-nav ml-6 mb-2 mb-lg-0">
@@ -62,10 +36,15 @@
     <div class="row text-center">
         {% for museum in museums %}
             <div class="col border">
-                <div class="parent">
-                    <img class="image1" src="{{museums[0].image_url}}" width=350 height=225 alt="default" /> 
-                    <img class="image2" src="{{museum.image_url}}" width=350 height=225 />
-                </div>
+                <form method="post">
+                    <input type="hidden" name="museum_id" value="{{museum.id}}">
+                    <button class="rounded mt-3 w-350 h-225" style="display:inline-block;vertical-align:top; min-width:350px; min-height: 225px; position: relative;" name="btn_id" value="detailed_view">
+                        <div class="rounded w-350 h-225">
+                            <img class="rounded" style="position: absolute; top: -2px; left: -2px; z-index: 3; background-size: cover; background-position: center center; background-image: url('{{museum.image_url}}');" width=350 height=225 type="image/png" />
+                            <img class="rounded" style="position: absolute; top: -2px; left: -2px; z-index: 2;" src="https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png" width=350 height=225 alt="museum-image" />
+                        </div>
+                    </button>
+                </form>
                 <p class="pt-4">
                     {{museum.name}}
                 </p>
