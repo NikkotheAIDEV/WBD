@@ -18,29 +18,32 @@ Session(app)
 def version():
     return { "version": "0.0.1" }, 200
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("passwrd")
-        password = str(password)
-        username = str(username)
+    if not session.get("name"):
+        if request.method == "POST":
+            username = request.form.get("username")
+            password = request.form.get("passwrd")
+            password = str(password)
+            username = str(username)
 
-        result = profile_handler.ProfileHandler().log_in(username, password)
-        if result != False:
-            session["name"] = username
-            session["id"] = result[0]
-            session["fav_category"] = result[1]
+            result = profile_handler.ProfileHandler().log_in(username, password)
+            if result != False:
+                session["name"] = username
+                session["id"] = result[0]
+                session["fav_category"] = result[1]
 
-            return redirect(url_for('index'))
-    return render_template("login.html")
+                return redirect(url_for('index'))
+        return render_template("login.html")
+    else:
+        return redirect(url_for('index'))
 
 @app.route("/logout", methods=["GET"])
 def logout():
     session.clear()
-    return redirect("login")
+    return redirect("/")
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         preference = request.form.get("dropdown_preference")
@@ -231,10 +234,15 @@ def add_museum():
 def favicon():
     return app.send_static_file('favicon.ico')
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
+
 # receive JSON object
 @app.route("/json-request", methods=["POST"])
 def json_request():
     return "JSON request example"
+
 
 if __name__ == "__main__":
      app.run(debug=True)
