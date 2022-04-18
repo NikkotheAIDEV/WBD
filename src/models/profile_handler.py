@@ -11,6 +11,10 @@ class ProfileHandler:
         connection.startConnection()
         query = "SELECT id, most_liked_category_id, hashed_password FROM Person WHERE username = \"{}\"".format(username)
         result = connection.query(query)
+
+        if result == []:
+            return False
+
         user_id = result[0][0]
         fav_category = result[0][1]
         hashed_password = result[0][2]
