@@ -1,4 +1,5 @@
 from crypt import methods
+import random
 from flask import Flask, request, render_template, redirect, session, url_for
 from flask_session import Session
 from models import category, person, interest, museum, profile_handler
@@ -32,6 +33,7 @@ def login():
                 session["name"] = username
                 session["id"] = result[0]
                 session["fav_category"] = result[1]
+                session["interested_in"] = result[2]
 
                 return redirect(url_for('index'))
         return render_template("login.html")
@@ -105,7 +107,16 @@ def index():
         
         __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
         __museum.startConnection()
-        results_ids = __museum.request_favourite(session.get("fav_category"), 30)
+
+
+        results_ids = []
+        if session.get("interested_in") == []:
+            results_ids.extend(__museum.request_favourite(session.get("fav_category"), 30))
+            random.shuffle(results_ids)
+        else:
+            results_ids.extend(__museum.request_favourite(session.get("fav_category"), 20))
+            results_ids.extend(__museum.request_interested(session.get("interested_in"), 10))
+            random.shuffle(results_ids)
 
         results = []
         for r in results_ids:
