@@ -75,14 +75,14 @@ museum_detail = []
 def results():
     if request.method == "POST":
         if request.form['btn_id'] == 'detailed_view':
-            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage")
+            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage", "empty")
             __museum.startConnection()
             
             museum_id = request.form.get("museum_id")
             result_museum = __museum.search_museum_by_id(museum_id)
             __museum.stopConnection()
 
-            _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
+            _fields = ['id', 'name', 'country', 'address', 'rating', 'number_of_ratings', 'category', 'longitute', 'lantitute', "image_url"]
             museum_dict = dict(zip(_fields, result_museum[0]))
             global museum_detail
             museum_detail = Item(museum_dict)
@@ -105,7 +105,7 @@ def index():
         if not session.get("name"):
             return redirect(url_for('login'))
         
-        __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
+        __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage", "empty") #this object is not for insertion. It is created so the search method inside can be used.
         __museum.startConnection()
 
 
@@ -123,7 +123,7 @@ def index():
             results.append(__museum.search_museum_by_id(r))
         __museum.stopConnection()
 
-        _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitude', 'latitude', 'image_url']
+        _fields = ['id', 'name', 'country', 'address', 'rating', 'number_of_ratings', 'category', 'longitude', 'latitude', 'image_url']
         museum_dicts = [dict(zip(_fields, r[0])) for  r in results]
         item_list = [Item(i) for i in museum_dicts]
         global museum_results
@@ -136,12 +136,12 @@ def index():
         if request.form['btn_id'] == 'search':
             museum_keyword = request.form.get("search_museums")
             museum_keyword = str(museum_keyword)
-            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage") #this object is not for insertion. It is created so the search method inside can be used.
+            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage", "empty") #this object is not for insertion. It is created so the search method inside can be used.
             __museum.startConnection()
             results = __museum.search_museum_by_name(museum_keyword, limit=100)
             __museum.stopConnection()
             #add field names
-            _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
+            _fields = ['id', 'name', 'country', 'address', 'rating', 'number_of_ratings', 'category', 'longitute', 'lantitute', "image_url"]
             museum_dicts = [dict(zip(_fields, r)) for r in results]
             #do some magic so it works.
             item_list = [Item(i) for i in museum_dicts]
@@ -149,55 +149,19 @@ def index():
             return redirect(url_for('results'))
 
         if request.form['btn_id'] == 'detailed_view':
-            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage")
+            __museum = museum.Museum("some", "random", "info", "for", "object", "for", "methods", "usage", "empty")
             __museum.startConnection()
             
             museum_id = request.form.get("museum_id")
             result_museum = __museum.search_museum_by_id(museum_id)
             __museum.stopConnection()
 
-            _fields = ['id', 'name', 'country', 'address', 'rating', 'category', 'longitute', 'lantitute', "image_url"]
+            _fields = ['id', 'name', 'country', 'address', 'rating', 'number_of_ratings', 'category', 'longitute', 'lantitute', "image_url"]
             museum_dict = dict(zip(_fields, result_museum[0]))
             global museum_detail
             museum_detail = Item(museum_dict)
 
             return redirect(url_for('detailed'))
-    
-# add category
-@app.route("/add-category", methods=["GET", "POST"])
-def add_category():
-    if request.method == "POST":
-        category_name = request.form.get("category_name")  
-        # insert category in database
-        cat = category.Category(category_name)
-        cat.startConnection()
-        tuple1 = (cat.category_name,)
-        cat.insert_prepared_statement("""INSERT INTO Categories VALUES(NULL, %s)""", tuple1)
-        cat.stopConnection()
-        return redirect(url_for("index"))
-
-    # if method is [GET], present the form
-    return render_template("add_category.html")
-
-    # return '''<h1>Arg1 is {}</h1>'''.format(category_name)#"query arguments example"
-
-@app.route("/add-person", methods=["GET", "POST"])
-def add_person():
-    if request.method == "POST":
-        #TODO: implement preference with dictionary
-        preference = request.form.get("dropdown_preference")
-        first_name = request.form.get("first_name")
-        last_name = request.form.get("last_name")
-        preference = int(preference)
-        user = person.Person(first_name, last_name, preference)
-        user.startConnection()
-        tuple1 = (user.first_name, user.last_name, user.preference)
-        user.insert_prepared_statement("INSERT INTO Person(id, first_name, user_name, most_liked_category_id) VALUES(NULL, %s, %s, %s)", tuple1)
-        user.stopConnection()
-        return redirect(url_for('index'))
-
-    # if method is [GET], present the form
-    return render_template("add_person.html")
 
 @app.route("/add-interest", methods=["GET", "POST"])
 def add_interest():
@@ -231,10 +195,10 @@ def add_museum():
         museum_category = request.form.get("category_dropdown")
         museum_category = int(museum_category)
         museum_image_url = request.form.get("museum_url")
-        museum_obj = museum.Museum(museum_name.upper(), museum_address, country, rating, museum_category, "NULL", "NULL", museum_image_url)
-        tuple1 = (museum_obj.museum_name, museum_obj.country, museum_obj.museum_address, museum_obj.rating, museum_obj.museum_category, museum_obj.image_url)
+        museum_obj = museum.Museum(museum_name.upper(), museum_address, country, rating, "NULL", museum_category, "NULL", "NULL", museum_image_url)
+        tuple1 = (museum_obj.museum_name, museum_obj.country, museum_obj.museum_address, museum_obj.rating, museum_obj.number_of_ratings, museum_obj.museum_category, museum_obj.image_url)
         museum_obj.startConnection()
-        query = "INSERT INTO Museums VALUES(NULL, %s, %s, %s, %s, %s, NULL, NULL, %s)"
+        query = "INSERT INTO Museums VALUES(NULL, %s, %s, %s, %s, %s, %s, NULL, NULL, %s)"
         museum_obj.insert_prepared_statement(query, tuple1)
         museum_obj.stopConnection()
     

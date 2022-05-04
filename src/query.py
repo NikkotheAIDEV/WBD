@@ -34,7 +34,6 @@ class Connection:
         cursor = self.db_conn.cursor(prepared=True)
         cursor.execute(query, data)
         self.db_conn.commit()
-        print("data inserted")
         cursor.close()
 
     def get_preapred_statement(self, query, data):

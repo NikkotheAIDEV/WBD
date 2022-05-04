@@ -4,11 +4,12 @@ import random
 import numpy as np
 class Museum(Connection):
     # __database_conn = None
-    def __init__(self, name, address, country, rating, category, longitude, latitude, image_url) -> None:
+    def __init__(self, name, address, country, rating, number_of_ratings, category, longitude, latitude, image_url) -> None:
         self.museum_name = name
         self.museum_address = address
         self.country = country
         self.rating = rating
+        self.number_of_ratings = number_of_ratings
         self.museum_category = category
         self.longitude = longitude
         self.latitude = latitude

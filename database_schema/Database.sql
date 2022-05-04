@@ -14,6 +14,7 @@ CREATE TABLE Museums (
     avg_rating DECIMAL(5, 2),
     category_id BIGINT,
     FOREIGN KEY (category_id) REFERENCES Categories(id),
+    number_of_ratings BIGINT DEFAULT '0'
     longitude Double,
     latitude Double,
     image_url VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
