@@ -70,7 +70,7 @@ class Item:
 
 museum_results = []
 museum_detail = []
-set_ids = {}
+ratings_given_ids = []
 
 @app.route("/results", methods=["GET","POST"])
 def results():
@@ -109,8 +109,16 @@ def detailed():
         rating = 0
         museum_id = request.form.get("museum_id")
 
-        global set_ids
-        if set_ids.get(museum_id) != '1':
+        global ratings_given_ids
+        ratings_given_ids.clear()
+        user_id = session.get("id")
+        query = "SELECT museum_id FROM Ratings WHERE person_id = {};".format(user_id)
+        results = __museum.query(query)
+
+        for index, i in enumerate(results):
+            ratings_given_ids.append(results[index][0])
+
+        if int(museum_id) not in ratings_given_ids:
             if request.form["rating"] == "1":
                 rating = 1
             elif request.form["rating"] == "2":
@@ -144,14 +152,17 @@ def detailed():
             
             # Update current page
             result_museum = __museum.search_museum_by_id(museum_id)
-            __museum.stopConnection()
             _fields = ['id', 'name', 'country', 'address', 'rating', 'number_of_ratings', 'category', 'longitute', 'lantitute', "image_url"]
             museum_dict = dict(zip(_fields, result_museum[0]))
             museum_detail = Item(museum_dict)
-            set_ids[museum_id] = "1"
-            print(set_ids)
+            
+            ratings_given_ids.append(int(museum_id))
+            add_rating_query = "INSERT INTO Ratings VALUE(NULL, %s, %s);"
+            tuple1 = (user_id, museum_id)
+            __museum.insert_prepared_statement(add_rating_query, tuple1)
+            __museum.stopConnection()
 
-            # Return template
+            # Return templa/te
             return redirect(url_for('detailed'))
 
         else:
