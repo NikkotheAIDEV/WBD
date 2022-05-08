@@ -14,6 +14,7 @@ CREATE TABLE Museums (
     avg_rating DECIMAL(5, 2),
     category_id BIGINT,
     FOREIGN KEY (category_id) REFERENCES Categories(id),
+    number_of_ratings BIGINT DEFAULT '0',
     longitude Double,
     latitude Double,
     image_url VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
@@ -26,6 +27,15 @@ CREATE TABLE Person (
     username VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     hashed_password VARCHAR(77) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     most_liked_category_id BIGINT
+);
+
+CREATE TABLE Ratings (
+	id BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT,
+    person_id BIGINT,
+    FOREIGN KEY (person_id) REFERENCES Person(id),
+    museum_id BIGINT,
+    FOREIGN KEY (museum_id) REFERENCES Museums(id),
+    rating INT
 );
 
 CREATE TABLE Visited (

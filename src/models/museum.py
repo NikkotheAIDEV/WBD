@@ -4,11 +4,12 @@ import random
 import numpy as np
 class Museum(Connection):
     # __database_conn = None
-    def __init__(self, name, address, country, rating, category, longitude, latitude, image_url) -> None:
+    def __init__(self, name, address, country, rating, number_of_ratings, category, longitude, latitude, image_url) -> None:
         self.museum_name = name
         self.museum_address = address
         self.country = country
         self.rating = rating
+        self.number_of_ratings = number_of_ratings
         self.museum_category = category
         self.longitude = longitude
         self.latitude = latitude
@@ -31,7 +32,7 @@ class Museum(Connection):
         return fav_arr
 
     # Get a 100 museums in interested_in category and select 4
-    def request_interested(self, id = [], number = 4) -> tuple:
+    def request_interested(self, id = [], number = 4) -> list:
 
         ids = ""
         for x in range(len(id)):
@@ -43,13 +44,14 @@ class Museum(Connection):
         query_interested_in = "SELECT id FROM Museums WHERE category_id IN ({}) AND (avg_rating > 0.5) ORDER BY id ASC LIMIT 100".format(ids)
         records_interested_in = self.query(query_interested_in)
         data_interested_in = np.array(records_interested_in)
-        interested_in = ()
+        interested_in = []
 
         already_inserted = []
         for _ in range(number):
             while True:
                 z = random.randrange(1, 100)
                 if z not in already_inserted:
+                    # interested_in = interested_in + data_interested_in[z, 0]
                     interested_in.append(data_interested_in[z, 0])
                     already_inserted.append(z)
                     break

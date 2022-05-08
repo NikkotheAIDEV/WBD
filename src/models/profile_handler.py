@@ -1,5 +1,5 @@
 from query import Connection
-from models import consts
+from models import consts, interest
 import bcrypt
 
 connection = Connection(consts.HOST, consts.DATABASE, consts.USER, consts.PASSWORD)
@@ -15,15 +15,25 @@ class ProfileHandler:
         if result == []:
             return False
 
+        # Find user info
         user_id = result[0][0]
         fav_category = result[0][1]
+        query_interested_in = "SELECT category_id FROM Interested_in WHERE person_id = {};".format(user_id)
+        interested_in_results = connection.query(query_interested_in)
+
+        # Find interested in categories for this user
+        interested_in_arr = []
+        for index, i in enumerate(interested_in_results):
+            interested_in_arr.append(interested_in_results[index][0])
+
+        # Find and check password
         hashed_password = result[0][2]
         hashed_password = hashed_password.encode('utf8')
 
         if bcrypt.checkpw(password, hashed_password):
             print("match")
             connection.stopConnection()
-            return [user_id, fav_category]
+            return [user_id, fav_category, interested_in_arr]
         else:
             connection.stopConnection()
             return False
