@@ -1,8 +1,8 @@
-from crypt import methods
-import random
 from flask import Flask, request, render_template, redirect, session, url_for
 from flask_session import Session
 from models import category, person, interest, museum, profile_handler
+from crypt import methods
+import random
 
 # Utility function passed to the html template for calculation.
 def round_num(x):
