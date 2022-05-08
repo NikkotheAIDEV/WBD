@@ -34,7 +34,8 @@ CREATE TABLE Ratings (
     person_id BIGINT,
     FOREIGN KEY (person_id) REFERENCES Person(id),
     museum_id BIGINT,
-    FOREIGN KEY (museum_id) REFERENCES Museums(id)
+    FOREIGN KEY (museum_id) REFERENCES Museums(id),
+    rating INT
 );
 
 CREATE TABLE Visited (

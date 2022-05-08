@@ -118,27 +118,28 @@ def detailed():
         for index, i in enumerate(results):
             ratings_given_ids.append(results[index][0])
 
+        if request.form["rating"] == "1":
+            rating = 1
+        elif request.form["rating"] == "2":
+            rating = 2
+        elif request.form["rating"] == "3":
+            rating = 3
+        elif request.form["rating"] == "4":
+            rating = 4
+        elif request.form["rating"] == "5":
+            rating = 5
+
+        # Query old values
+        query = "SELECT avg_rating, number_of_ratings FROM Museums WHERE id = {}".format(museum_id)
+        results = __museum.query(query)
+
+        # Get old values
+        avg_rating = results[0][0]
+        avg_rating = ((5-1)*(avg_rating-0)/1-0)+1
+        number_of_ratings = results[0][1]
+
         if int(museum_id) not in ratings_given_ids:
-            if request.form["rating"] == "1":
-                rating = 1
-            elif request.form["rating"] == "2":
-                rating = 2
-            elif request.form["rating"] == "3":
-                rating = 3
-            elif request.form["rating"] == "4":
-                rating = 4
-            elif request.form["rating"] == "5":
-                rating = 5
 
-            # Query old values
-            query = "SELECT avg_rating, number_of_ratings FROM Museums WHERE id = {}".format(museum_id)
-            results = __museum.query(query)
-
-            # Get old values
-            avg_rating = results[0][0]
-            avg_rating = ((5-1)*(avg_rating-0)/1-0)+1
-            number_of_ratings = results[0][1]
-            
             # Calculate new values
             prod = number_of_ratings * avg_rating
             number_of_ratings += 1
@@ -156,9 +157,10 @@ def detailed():
             museum_dict = dict(zip(_fields, result_museum[0]))
             museum_detail = Item(museum_dict)
             
+            # Update Ratings table
             ratings_given_ids.append(int(museum_id))
-            add_rating_query = "INSERT INTO Ratings VALUE(NULL, %s, %s);"
-            tuple1 = (user_id, museum_id)
+            add_rating_query = "INSERT INTO Ratings VALUE(NULL, %s, %s, %s);"
+            tuple1 = (user_id, museum_id, rating)
             __museum.insert_prepared_statement(add_rating_query, tuple1)
             __museum.stopConnection()
 
@@ -166,6 +168,33 @@ def detailed():
             return redirect(url_for('detailed'))
 
         else:
+
+            # Get old rating from Ratings
+            get_rating_query = "SELECT rating FROM Ratings Where person_id = {} AND museum_id = {}".format(user_id, museum_id)
+            results = __museum.query(get_rating_query)
+            old_rating = results[0][0]
+
+            # Calculate new values
+            prod = number_of_ratings * avg_rating
+            new_rating = (prod + rating - old_rating) / number_of_ratings
+            new_rating = ((1-0) * (new_rating - 0)/(5 - 0) + 0)
+
+            # Update db
+            update_query = "UPDATE Museums SET avg_rating = %s, number_of_ratings = %s WHERE id = %s"
+            tuple1 = (new_rating, number_of_ratings, museum_id)
+            __museum.insert_prepared_statement(update_query, tuple1)
+
+            # Update current page
+            result_museum = __museum.search_museum_by_id(museum_id)
+            _fields = ['id', 'name', 'country', 'address', 'rating', 'number_of_ratings', 'category', 'longitute', 'lantitute', "image_url"]
+            museum_dict = dict(zip(_fields, result_museum[0]))
+            museum_detail = Item(museum_dict)
+
+            update_ratings_query = "UPDATE Ratings SET rating = %s Where person_id = %s AND museum_id = %s"
+            tuple1 = (rating, user_id, museum_id)
+            __museum.insert_prepared_statement(update_ratings_query, tuple1)
+            __museum.stopConnection()
+
             return redirect(url_for('detailed'))
 
 
