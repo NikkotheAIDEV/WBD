@@ -69,7 +69,7 @@
                     {% endif %}
                 </p>
             </form>
-            <p> {{((5-1)*(museum.rating-0)/1-0)+1}} average based on {{museum.number_of_ratings}} reviews.</p>
+            <p> {{ (museum.rating*5)|round(2) }} average based on {{museum.number_of_ratings}} reviews.</p>
 
             {% if museum.category == 1 %}
                 <p><strong>Museum category: </strong>Art Museums<p>

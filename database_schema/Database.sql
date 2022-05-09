@@ -11,7 +11,7 @@ CREATE TABLE Museums (
     museum_name VARCHAR(177) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     country VARCHAR(37) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     address VARCHAR(177) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    avg_rating DECIMAL(5, 2),
+    avg_rating FLOAT(4,2),
     category_id BIGINT,
     FOREIGN KEY (category_id) REFERENCES Categories(id),
     number_of_ratings BIGINT DEFAULT '0',

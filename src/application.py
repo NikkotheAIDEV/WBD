@@ -134,8 +134,9 @@ def detailed():
         results = __museum.query(query)
 
         # Get old values
-        avg_rating = results[0][0]
-        avg_rating = ((5-1)*(avg_rating-0)/1-0)+1
+        avg_rating = round(results[0][0], 2)
+        avg_rating = round(avg_rating * 5, 2)
+        print(avg_rating)
         number_of_ratings = results[0][1]
 
         if int(museum_id) not in ratings_given_ids:
@@ -144,7 +145,8 @@ def detailed():
             prod = number_of_ratings * avg_rating
             number_of_ratings += 1
             new_rating = (prod + rating) / number_of_ratings
-            new_rating = ((1-0) * (new_rating - 0)/(5 - 0) + 0)
+            new_rating = round(new_rating * 0.2, 2)
+            print("The new rating is: " + str(new_rating))
 
             # Update db
             update_query = "UPDATE Museums SET avg_rating = %s, number_of_ratings = %s WHERE id = %s"
@@ -176,8 +178,9 @@ def detailed():
 
             # Calculate new values
             prod = number_of_ratings * avg_rating
-            new_rating = (prod + rating - old_rating) / number_of_ratings
-            new_rating = ((1-0) * (new_rating - 0)/(5 - 0) + 0)
+            new_prod = prod + rating - old_rating
+            new_rating = round((new_prod / number_of_ratings) * 0.2, 3)
+            print("The new rating is: " + str(new_rating))
 
             # Update db
             update_query = "UPDATE Museums SET avg_rating = %s, number_of_ratings = %s WHERE id = %s"

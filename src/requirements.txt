@@ -9,7 +9,7 @@ charset-normalizer==2.0.12
 click==8.0.4
 distlib==0.3.4
 filelock==3.6.0
-Flask==2.1.2
+Flask==2.0.3
 Flask-RESTful==0.3.9
 Flask-Session==0.4.0
 flatbuffers==2.0
@@ -27,7 +27,7 @@ Jinja2==3.0.3
 libclang==13.0.0
 Markdown==3.3.6
 MarkupSafe==2.1.0
-mysql-connector-python==8.0.28
+mysql-connector-python==8.0.29
 numpy==1.22.3
 oauthlib==3.2.0
 opt-einsum==3.3.0
